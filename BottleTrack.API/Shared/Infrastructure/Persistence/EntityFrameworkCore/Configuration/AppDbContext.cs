@@ -4,8 +4,12 @@ using Microsoft.EntityFrameworkCore;
 
 namespace BottleTrack.API.Shared.Infrastructure.Persistence.EntityFrameworkCore.Configuration;
 
-public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(options)
+public class AppDbContext : DbContext
 {
+    public AppDbContext(DbContextOptions<AppDbContext> options) : base(options)
+    {
+    }
+
     protected override void OnConfiguring(DbContextOptionsBuilder builder)
     {
         builder.AddInterceptors(new AuditableEntityInterceptor());

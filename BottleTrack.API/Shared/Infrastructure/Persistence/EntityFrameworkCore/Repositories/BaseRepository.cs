@@ -4,9 +4,14 @@ using Microsoft.EntityFrameworkCore;
 
 namespace BottleTrack.API.Shared.Infrastructure.Persistence.EntityFrameworkCore.Repositories;
 
-public class BaseRepository<TEntity>(AppDbContext context) : IBaseRepository<TEntity> where TEntity : class
+public class BaseRepository<TEntity> : IBaseRepository<TEntity> where TEntity : class
 {
-    protected readonly AppDbContext Context = context;
+    protected readonly AppDbContext Context;
+
+    public BaseRepository(AppDbContext context)
+    {
+        Context = context;
+    }
 
     public async Task AddAsync(TEntity entity, CancellationToken cancellationToken = default)
     {
@@ -15,7 +20,7 @@ public class BaseRepository<TEntity>(AppDbContext context) : IBaseRepository<TEn
 
     public async Task<TEntity?> FindByIdAsync(Guid id, CancellationToken cancellationToken = default)
     {
-        return await Context.Set<TEntity>().FindAsync([id], cancellationToken);
+        return await Context.Set<TEntity>().FindAsync(new object[] { id }, cancellationToken);
     }
 
     public void Update(TEntity entity)
