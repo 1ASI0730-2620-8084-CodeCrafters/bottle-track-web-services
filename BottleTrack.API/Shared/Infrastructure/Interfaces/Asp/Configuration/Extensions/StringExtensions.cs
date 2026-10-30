@@ -2,15 +2,15 @@ using System.Text.RegularExpressions;
 
 namespace BottleTrack.API.Shared.Infrastructure.Interfaces.Asp.Configuration.Extensions;
 
-public static partial class StringExtensions
+public static class StringExtensions
 {
-    [GeneratedRegex("(?<!^)([A-Z][a-z]|(?<=[a-z])[A-Z])", RegexOptions.Compiled)]
-    private static partial Regex KebabCaseRegex();
+    private static readonly Regex KebabCaseRegex = new Regex("(?<!^)([A-Z][a-z]|(?<=[a-z])[A-Z])", RegexOptions.Compiled);
 
     public static string ToKebabCase(this string text)
     {
-        return string.IsNullOrEmpty(text)
-            ? text
-            : KebabCaseRegex().Replace(text, "-$1").Trim().ToLower();
+        if (string.IsNullOrEmpty(text))
+            return text;
+
+        return KebabCaseRegex.Replace(text, "-$1").Trim().ToLower();
     }
 }

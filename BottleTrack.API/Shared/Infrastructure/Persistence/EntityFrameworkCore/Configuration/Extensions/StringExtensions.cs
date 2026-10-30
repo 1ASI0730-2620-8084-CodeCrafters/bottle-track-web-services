@@ -1,3 +1,4 @@
+using System.Text;
 using Humanizer;
 
 namespace BottleTrack.API.Shared.Infrastructure.Persistence.EntityFrameworkCore.Configuration.Extensions;
@@ -6,23 +7,19 @@ public static class StringExtensions
 {
     public static string ToSnakeCase(this string text)
     {
-        return new string(Convert(text.GetEnumerator()).ToArray());
+        StringBuilder builder = new StringBuilder();
 
-        static IEnumerable<char> Convert(CharEnumerator e)
+        for (int index = 0; index < text.Length; index++)
         {
-            if (!e.MoveNext()) yield break;
-            yield return char.ToLower(e.Current);
-            while (e.MoveNext())
-                if (char.IsUpper(e.Current))
-                {
-                    yield return '_';
-                    yield return char.ToLower(e.Current);
-                }
-                else
-                {
-                    yield return e.Current;
-                }
+            char character = text[index];
+
+            if (char.IsUpper(character) && index > 0)
+                builder.Append('_');
+
+            builder.Append(char.ToLower(character));
         }
+
+        return builder.ToString();
     }
 
     public static string ToPlural(this string text)
