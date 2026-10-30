@@ -1,28 +1,61 @@
 namespace BottleTrack.API.Shared.Application.Patterns;
 
-public abstract record Result<TValue, TError>
+public class Result<TValue, TError>
 {
-    public sealed record Success(TValue Value) : Result<TValue, TError>;
-    public sealed record Failure(TError Error) : Result<TValue, TError>;
-    public bool IsSuccess => this is Success;
-    public bool IsFailure => this is Failure;
-    public Result<TNext, TError> Map<TNext>(Func<TValue, TNext> onSuccess) =>
-        this switch
-        {
-            Success s => new Result<TNext, TError>.Success(onSuccess(s.Value)),
-            Failure f => new Result<TNext, TError>.Failure(f.Error),
-            _ => throw new InvalidOperationException("Unknown Result type")
-        };
-    public TResult Fold<TResult>(Func<TValue, TResult> onSuccess, Func<TError, TResult> onFailure) =>
-        this switch
-        {
-            Success s => onSuccess(s.Value),
-            Failure f => onFailure(f.Error),
-            _ => throw new InvalidOperationException("Unknown Result type")
-        };
-    public void Match(Action<TValue> onSuccess, Action<TError> onFailure)
+    private readonly TValue? value;
+    private readonly TError? error;
+
+    public bool IsSuccess { get; }
+
+    public bool IsFailure
     {
-        if (this is Success s) onSuccess(s.Value);
-        else if (this is Failure f) onFailure(f.Error);
+        get { return !IsSuccess; }
+    }
+
+    public TValue Value
+    {
+        get
+        {
+            if (!IsSuccess)
+                throw new InvalidOperationException("A failed result has no value.");
+
+            return value!;
+        }
+    }
+
+    public TError Error
+    {
+        get
+        {
+            if (IsSuccess)
+                throw new InvalidOperationException("A successful result has no error.");
+
+            return error!;
+        }
+    }
+
+    private Result(bool isSuccess, TValue? value, TError? error)
+    {
+        IsSuccess = isSuccess;
+        this.value = value;
+        this.error = error;
+    }
+
+    public static Result<TValue, TError> Success(TValue value)
+    {
+        return new Result<TValue, TError>(true, value, default);
+    }
+
+    public static Result<TValue, TError> Failure(TError error)
+    {
+        return new Result<TValue, TError>(false, default, error);
+    }
+
+    public TResult Fold<TResult>(Func<TValue, TResult> onSuccess, Func<TError, TResult> onFailure)
+    {
+        if (IsSuccess)
+            return onSuccess(value!);
+
+        return onFailure(error!);
     }
 }
