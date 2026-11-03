@@ -21,4 +21,61 @@
     <data name="UnexpectedErrorProcessingRequest" xml:space="preserve">
         <value>Ocurrió un error inesperado al procesar su solicitud.</value>
     </data>
+    <data name="BusinessNameRequired" xml:space="preserve">
+        <value>La razón social es obligatoria.</value>
+    </data>
+    <data name="InvalidTaxId" xml:space="preserve">
+        <value>El RUC debe tener 11 dígitos.</value>
+    </data>
+    <data name="InvalidEmail" xml:space="preserve">
+        <value>El correo electrónico no es válido.</value>
+    </data>
+    <data name="TaxIdAlreadyRegistered" xml:space="preserve">
+        <value>Ya existe una organización registrada con este RUC.</value>
+    </data>
+    <data name="OrganizationNotFound" xml:space="preserve">
+        <value>No se encontró la organización.</value>
+    </data>
+    <data name="InvalidUserData" xml:space="preserve">
+        <value>El nombre y el apellido son obligatorios.</value>
+    </data>
+    <data name="PasswordTooShort" xml:space="preserve">
+        <value>La contraseña debe tener al menos 8 caracteres.</value>
+    </data>
+    <data name="EmailAlreadyRegistered" xml:space="preserve">
+        <value>Este correo electrónico ya está registrado.</value>
+    </data>
+    <data name="UserNotFound" xml:space="preserve">
+        <value>No se encontró el usuario.</value>
+    </data>
+    <data name="InvalidVehicleData" xml:space="preserve">
+        <value>La marca, el modelo y una capacidad mayor que cero son obligatorios.</value>
+    </data>
+    <data name="InvalidPlateNumber" xml:space="preserve">
+        <value>La placa debe tener el formato AAA-111.</value>
+    </data>
+    <data name="PlateNumberAlreadyRegistered" xml:space="preserve">
+        <value>Ya existe un vehículo registrado con esta placa.</value>
+    </data>
+    <data name="VehicleNotFound" xml:space="preserve">
+        <value>No se encontró el vehículo.</value>
+    </data>
+    <data name="InvalidDriverData" xml:space="preserve">
+        <value>El nombre y el apellido son obligatorios.</value>
+    </data>
+    <data name="InvalidDocumentNumber" xml:space="preserve">
+        <value>El DNI debe tener 8 dígitos.</value>
+    </data>
+    <data name="InvalidLicenseNumber" xml:space="preserve">
+        <value>La licencia debe ser una letra seguida de 8 dígitos.</value>
+    </data>
+    <data name="DocumentNumberAlreadyRegistered" xml:space="preserve">
+        <value>Ya existe un conductor registrado con este DNI.</value>
+    </data>
+    <data name="LicenseNumberAlreadyRegistered" xml:space="preserve">
+        <value>Ya existe un conductor registrado con esta licencia.</value>
+    </data>
+    <data name="DriverNotFound" xml:space="preserve">
+        <value>No se encontró el conductor.</value>
+    </data>
 </root>
