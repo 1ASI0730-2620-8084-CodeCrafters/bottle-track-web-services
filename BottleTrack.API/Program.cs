@@ -1,3 +1,16 @@
+using System.Text.Json;
+using System.Text.Json.Serialization;
+using BottleTrack.API.Fleet.Application.Internal.CommandServices;
+using BottleTrack.API.Fleet.Application.Internal.QueryServices;
+using BottleTrack.API.Fleet.Application.Services;
+using BottleTrack.API.Fleet.Domain.Repositories;
+using BottleTrack.API.Fleet.Infrastructure.Persistence.EntityFrameworkCore.Repositories;
+using BottleTrack.API.Iam.Application.Internal.CommandServices;
+using BottleTrack.API.Iam.Application.Internal.QueryServices;
+using BottleTrack.API.Iam.Application.Services;
+using BottleTrack.API.Iam.Domain.Repositories;
+using BottleTrack.API.Iam.Infrastructure.Hashing;
+using BottleTrack.API.Iam.Infrastructure.Persistence.EntityFrameworkCore.Repositories;
 using BottleTrack.API.Resources;
 using BottleTrack.API.Shared.Domain.Repositories;
 using BottleTrack.API.Shared.Infrastructure.Interfaces.Asp.Configuration;
@@ -15,6 +28,8 @@ builder.Services.AddLocalization();
 
 builder.Services.AddRouting(options => options.LowercaseUrls = false);
 builder.Services.AddControllers(options => options.Conventions.Add(new KebabCaseRouteNamingConvention()))
+    .AddJsonOptions(options =>
+        options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter(JsonNamingPolicy.SnakeCaseLower)))
     .AddDataAnnotationsLocalization(options =>
         options.DataAnnotationLocalizerProvider = (_, factory) => factory.Create(typeof(SharedResource)))
     .ConfigureApiBehaviorOptions(options =>
@@ -41,18 +56,22 @@ builder.Services.AddProblemDetails(options =>
 {
     options.CustomizeProblemDetails = context =>
     {
-        if (context.ProblemDetails.Status is null or >= 500)
+        if (context.ProblemDetails.Status == null || context.ProblemDetails.Status >= 500)
         {
             var localizer = context.HttpContext.RequestServices.GetRequiredService<IStringLocalizer<SharedResource>>();
-            context.ProblemDetails.Title ??= localizer["UnexpectedServerError"].Value;
-            context.ProblemDetails.Detail ??= localizer["UnexpectedErrorProcessingRequest"].Value;
+            if (context.ProblemDetails.Title == null)
+                context.ProblemDetails.Title = localizer["UnexpectedServerError"].Value;
+
+            if (context.ProblemDetails.Detail == null)
+                context.ProblemDetails.Detail = localizer["UnexpectedErrorProcessingRequest"].Value;
         }
     };
 });
 
 builder.Services.AddOpenApi();
 
-var allowedOrigins = builder.Configuration.GetSection("Cors:AllowedOrigins").Get<string[]>() ?? [];
+string[]? configuredOrigins = builder.Configuration.GetSection("Cors:AllowedOrigins").Get<string[]>();
+string[] allowedOrigins = configuredOrigins == null ? new string[0] : configuredOrigins;
 builder.Services.AddCors(options =>
     options.AddPolicy("Frontend", policy => policy.WithOrigins(allowedOrigins).AllowAnyHeader().AllowAnyMethod()));
 
@@ -76,6 +95,21 @@ builder.Services.AddDbContext<AppDbContext>((serviceProvider, options) =>
 
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 
+builder.Services.AddScoped<IPasswordHasher, Pbkdf2PasswordHasher>();
+builder.Services.AddScoped<IOrganizationRepository, OrganizationRepository>();
+builder.Services.AddScoped<IUserRepository, UserRepository>();
+builder.Services.AddScoped<IOrganizationCommandService, OrganizationCommandService>();
+builder.Services.AddScoped<IOrganizationQueryService, OrganizationQueryService>();
+builder.Services.AddScoped<IUserCommandService, UserCommandService>();
+builder.Services.AddScoped<IUserQueryService, UserQueryService>();
+
+builder.Services.AddScoped<IVehicleRepository, VehicleRepository>();
+builder.Services.AddScoped<IDriverRepository, DriverRepository>();
+builder.Services.AddScoped<IVehicleCommandService, VehicleCommandService>();
+builder.Services.AddScoped<IVehicleQueryService, VehicleQueryService>();
+builder.Services.AddScoped<IDriverCommandService, DriverCommandService>();
+builder.Services.AddScoped<IDriverQueryService, DriverQueryService>();
+
 var app = builder.Build();
 
 using (var scope = app.Services.CreateScope())
@@ -86,7 +120,7 @@ using (var scope = app.Services.CreateScope())
 
 app.UseExceptionHandler();
 
-string[] supportedCultures = ["en", "en-US", "es", "es-PE"];
+string[] supportedCultures = new string[] { "en", "en-US", "es", "es-PE" };
 var localizationOptions = new RequestLocalizationOptions()
     .SetDefaultCulture(supportedCultures[0])
     .AddSupportedCultures(supportedCultures)
