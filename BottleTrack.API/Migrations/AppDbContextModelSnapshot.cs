@@ -238,6 +238,431 @@ namespace BottleTrack.API.Migrations
                     b.ToTable("users");
                 });
 
+            modelBuilder.Entity("BottleTrack.API.Incidents.Domain.Model.Aggregates.Incident", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .HasColumnType("char(36)")
+                        .HasColumnName("id");
+
+                    b.Property<int?>("AffectedQuantity")
+                        .HasColumnType("int")
+                        .HasColumnName("affected_quantity");
+
+                    b.Property<string>("Code")
+                        .IsRequired()
+                        .HasMaxLength(10)
+                        .HasColumnType("varchar(10)")
+                        .HasColumnName("code");
+
+                    b.Property<Guid?>("DeliveryStopId")
+                        .HasColumnType("char(36)")
+                        .HasColumnName("delivery_stop_id");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasMaxLength(500)
+                        .HasColumnType("varchar(500)")
+                        .HasColumnName("description");
+
+                    b.Property<DateTime>("ReportedAt")
+                        .HasColumnType("datetime(6)")
+                        .HasColumnName("reported_at");
+
+                    b.Property<Guid>("ReportedBy")
+                        .HasColumnType("char(36)")
+                        .HasColumnName("reported_by");
+
+                    b.Property<string>("Resolution")
+                        .HasMaxLength(500)
+                        .HasColumnType("varchar(500)")
+                        .HasColumnName("resolution");
+
+                    b.Property<DateTime?>("ResolvedAt")
+                        .HasColumnType("datetime(6)")
+                        .HasColumnName("resolved_at");
+
+                    b.Property<string>("Severity")
+                        .IsRequired()
+                        .HasMaxLength(20)
+                        .HasColumnType("varchar(20)")
+                        .HasColumnName("severity");
+
+                    b.Property<string>("Source")
+                        .IsRequired()
+                        .HasMaxLength(30)
+                        .HasColumnType("varchar(30)")
+                        .HasColumnName("source");
+
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .HasMaxLength(20)
+                        .HasColumnType("varchar(20)")
+                        .HasColumnName("status");
+
+                    b.Property<Guid>("TransportOperationId")
+                        .HasColumnType("char(36)")
+                        .HasColumnName("transport_operation_id");
+
+                    b.Property<string>("Type")
+                        .IsRequired()
+                        .HasMaxLength(30)
+                        .HasColumnType("varchar(30)")
+                        .HasColumnName("type");
+
+                    b.HasKey("Id")
+                        .HasName("p_k_incidents");
+
+                    b.HasIndex("Code")
+                        .IsUnique()
+                        .HasDatabaseName("i_x_incidents_code");
+
+                    b.ToTable("incidents");
+                });
+
+            modelBuilder.Entity("BottleTrack.API.Incidents.Domain.Model.Entities.Evidence", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .HasColumnType("char(36)")
+                        .HasColumnName("id");
+
+                    b.Property<string>("FileType")
+                        .IsRequired()
+                        .HasMaxLength(30)
+                        .HasColumnType("varchar(30)")
+                        .HasColumnName("file_type");
+
+                    b.Property<string>("FileUrl")
+                        .IsRequired()
+                        .HasMaxLength(500)
+                        .HasColumnType("varchar(500)")
+                        .HasColumnName("file_url");
+
+                    b.Property<Guid>("IncidentId")
+                        .HasColumnType("char(36)")
+                        .HasColumnName("incident_id");
+
+                    b.Property<DateTime>("UploadedAt")
+                        .HasColumnType("datetime(6)")
+                        .HasColumnName("uploaded_at");
+
+                    b.Property<Guid>("UploadedBy")
+                        .HasColumnType("char(36)")
+                        .HasColumnName("uploaded_by");
+
+                    b.HasKey("Id")
+                        .HasName("p_k_evidences");
+
+                    b.HasIndex("IncidentId")
+                        .HasDatabaseName("i_x_evidences_incident_id");
+
+                    b.ToTable("evidences");
+                });
+
+            modelBuilder.Entity("BottleTrack.API.Monitoring.Domain.Model.Aggregates.Alert", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .HasColumnType("char(36)")
+                        .HasColumnName("id");
+
+                    b.Property<DateTime?>("AcknowledgedAt")
+                        .HasColumnType("datetime(6)")
+                        .HasColumnName("acknowledged_at");
+
+                    b.Property<Guid?>("AcknowledgedBy")
+                        .HasColumnType("char(36)")
+                        .HasColumnName("acknowledged_by");
+
+                    b.Property<Guid>("IotDeviceId")
+                        .HasColumnType("char(36)")
+                        .HasColumnName("iot_device_id");
+
+                    b.Property<DateTime>("RaisedAt")
+                        .HasColumnType("datetime(6)")
+                        .HasColumnName("raised_at");
+
+                    b.Property<Guid>("TransportOperationId")
+                        .HasColumnType("char(36)")
+                        .HasColumnName("transport_operation_id");
+
+                    b.Property<string>("Type")
+                        .IsRequired()
+                        .HasMaxLength(30)
+                        .HasColumnType("varchar(30)")
+                        .HasColumnName("type");
+
+                    b.HasKey("Id")
+                        .HasName("p_k_alerts");
+
+                    b.HasIndex("IotDeviceId")
+                        .HasDatabaseName("i_x_alerts_iot_device_id");
+
+                    b.ToTable("alerts");
+                });
+
+            modelBuilder.Entity("BottleTrack.API.Monitoring.Domain.Model.Aggregates.IotDevice", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .HasColumnType("char(36)")
+                        .HasColumnName("id");
+
+                    b.Property<decimal>("ImpactThreshold")
+                        .HasPrecision(5, 2)
+                        .HasColumnType("decimal(5,2)")
+                        .HasColumnName("impact_threshold");
+
+                    b.Property<decimal>("SafeTemperatureMax")
+                        .HasPrecision(5, 2)
+                        .HasColumnType("decimal(5,2)")
+                        .HasColumnName("safe_temperature_max");
+
+                    b.Property<decimal>("SafeTemperatureMin")
+                        .HasPrecision(5, 2)
+                        .HasColumnType("decimal(5,2)")
+                        .HasColumnName("safe_temperature_min");
+
+                    b.Property<string>("SerialNumber")
+                        .IsRequired()
+                        .HasMaxLength(60)
+                        .HasColumnType("varchar(60)")
+                        .HasColumnName("serial_number");
+
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .HasMaxLength(20)
+                        .HasColumnType("varchar(20)")
+                        .HasColumnName("status");
+
+                    b.Property<Guid?>("VehicleId")
+                        .HasColumnType("char(36)")
+                        .HasColumnName("vehicle_id");
+
+                    b.HasKey("Id")
+                        .HasName("p_k_iot_devices");
+
+                    b.HasIndex("SerialNumber")
+                        .IsUnique()
+                        .HasDatabaseName("i_x_iot_devices_serial_number");
+
+                    b.ToTable("iot_devices");
+                });
+
+            modelBuilder.Entity("BottleTrack.API.Monitoring.Domain.Model.Aggregates.SensorReading", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .HasColumnType("char(36)")
+                        .HasColumnName("id");
+
+                    b.Property<decimal?>("ImpactForce")
+                        .HasPrecision(5, 2)
+                        .HasColumnType("decimal(5,2)")
+                        .HasColumnName("impact_force");
+
+                    b.Property<Guid>("IotDeviceId")
+                        .HasColumnType("char(36)")
+                        .HasColumnName("iot_device_id");
+
+                    b.Property<decimal?>("Latitude")
+                        .HasPrecision(9, 6)
+                        .HasColumnType("decimal(9,6)")
+                        .HasColumnName("latitude");
+
+                    b.Property<decimal?>("Longitude")
+                        .HasPrecision(9, 6)
+                        .HasColumnType("decimal(9,6)")
+                        .HasColumnName("longitude");
+
+                    b.Property<DateTime>("RecordedAt")
+                        .HasColumnType("datetime(6)")
+                        .HasColumnName("recorded_at");
+
+                    b.Property<decimal?>("TemperatureCelsius")
+                        .HasPrecision(5, 2)
+                        .HasColumnType("decimal(5,2)")
+                        .HasColumnName("temperature_celsius");
+
+                    b.Property<Guid?>("TransportOperationId")
+                        .HasColumnType("char(36)")
+                        .HasColumnName("transport_operation_id");
+
+                    b.HasKey("Id")
+                        .HasName("p_k_sensor_readings");
+
+                    b.HasIndex("IotDeviceId")
+                        .HasDatabaseName("i_x_sensor_readings_iot_device_id");
+
+                    b.ToTable("sensor_readings");
+                });
+
+            modelBuilder.Entity("BottleTrack.API.Operations.Domain.Model.Aggregates.DeliveryPoint", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .HasColumnType("char(36)")
+                        .HasColumnName("id");
+
+                    b.Property<string>("Address")
+                        .IsRequired()
+                        .HasMaxLength(255)
+                        .HasColumnType("varchar(255)")
+                        .HasColumnName("address");
+
+                    b.Property<string>("BusinessName")
+                        .IsRequired()
+                        .HasMaxLength(255)
+                        .HasColumnType("varchar(255)")
+                        .HasColumnName("business_name");
+
+                    b.Property<string>("District")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("varchar(100)")
+                        .HasColumnName("district");
+
+                    b.Property<decimal?>("Latitude")
+                        .HasPrecision(9, 6)
+                        .HasColumnType("decimal(9,6)")
+                        .HasColumnName("latitude");
+
+                    b.Property<decimal?>("Longitude")
+                        .HasPrecision(9, 6)
+                        .HasColumnType("decimal(9,6)")
+                        .HasColumnName("longitude");
+
+                    b.Property<Guid>("OrganizationId")
+                        .HasColumnType("char(36)")
+                        .HasColumnName("organization_id");
+
+                    b.Property<Guid?>("OwnerUserId")
+                        .HasColumnType("char(36)")
+                        .HasColumnName("owner_user_id");
+
+                    b.HasKey("Id")
+                        .HasName("p_k_delivery_points");
+
+                    b.HasIndex("OrganizationId")
+                        .HasDatabaseName("i_x_delivery_points_organization_id");
+
+                    b.ToTable("delivery_points");
+                });
+
+            modelBuilder.Entity("BottleTrack.API.Operations.Domain.Model.Aggregates.TransportOperation", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .HasColumnType("char(36)")
+                        .HasColumnName("id");
+
+                    b.Property<string>("CancellationReason")
+                        .HasMaxLength(255)
+                        .HasColumnType("varchar(255)")
+                        .HasColumnName("cancellation_reason");
+
+                    b.Property<string>("Code")
+                        .IsRequired()
+                        .HasMaxLength(10)
+                        .HasColumnType("varchar(10)")
+                        .HasColumnName("code");
+
+                    b.Property<DateTime?>("CompletedAt")
+                        .HasColumnType("datetime(6)")
+                        .HasColumnName("completed_at");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasMaxLength(255)
+                        .HasColumnType("varchar(255)")
+                        .HasColumnName("description");
+
+                    b.Property<DateTime?>("DispatchedAt")
+                        .HasColumnType("datetime(6)")
+                        .HasColumnName("dispatched_at");
+
+                    b.Property<Guid?>("DriverId")
+                        .HasColumnType("char(36)")
+                        .HasColumnName("driver_id");
+
+                    b.Property<Guid>("OrganizationId")
+                        .HasColumnType("char(36)")
+                        .HasColumnName("organization_id");
+
+                    b.Property<DateOnly>("ScheduledDate")
+                        .HasColumnType("date")
+                        .HasColumnName("scheduled_date");
+
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .HasMaxLength(20)
+                        .HasColumnType("varchar(20)")
+                        .HasColumnName("status");
+
+                    b.Property<Guid?>("VehicleId")
+                        .HasColumnType("char(36)")
+                        .HasColumnName("vehicle_id");
+
+                    b.HasKey("Id")
+                        .HasName("p_k_transport_operations");
+
+                    b.HasIndex("Code")
+                        .IsUnique()
+                        .HasDatabaseName("i_x_transport_operations_code");
+
+                    b.HasIndex("OrganizationId")
+                        .HasDatabaseName("i_x_transport_operations_organization_id");
+
+                    b.ToTable("transport_operations");
+                });
+
+            modelBuilder.Entity("BottleTrack.API.Operations.Domain.Model.Entities.DeliveryStop", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .HasColumnType("char(36)")
+                        .HasColumnName("id");
+
+                    b.Property<DateTime?>("ConfirmedAt")
+                        .HasColumnType("datetime(6)")
+                        .HasColumnName("confirmed_at");
+
+                    b.Property<int?>("DeliveredQuantity")
+                        .HasColumnType("int")
+                        .HasColumnName("delivered_quantity");
+
+                    b.Property<Guid>("DeliveryPointId")
+                        .HasColumnType("char(36)")
+                        .HasColumnName("delivery_point_id");
+
+                    b.Property<string>("FailureReason")
+                        .HasMaxLength(255)
+                        .HasColumnType("varchar(255)")
+                        .HasColumnName("failure_reason");
+
+                    b.Property<int>("PlannedQuantity")
+                        .HasColumnType("int")
+                        .HasColumnName("planned_quantity");
+
+                    b.Property<int>("SequenceNumber")
+                        .HasColumnType("int")
+                        .HasColumnName("sequence_number");
+
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .HasMaxLength(20)
+                        .HasColumnType("varchar(20)")
+                        .HasColumnName("status");
+
+                    b.Property<Guid>("TransportOperationId")
+                        .HasColumnType("char(36)")
+                        .HasColumnName("transport_operation_id");
+
+                    b.HasKey("Id")
+                        .HasName("p_k_delivery_stops");
+
+                    b.HasIndex("DeliveryPointId")
+                        .HasDatabaseName("i_x_delivery_stops_delivery_point_id");
+
+                    b.HasIndex("TransportOperationId")
+                        .HasDatabaseName("i_x_delivery_stops_transport_operation_id");
+
+                    b.ToTable("delivery_stops");
+                });
+
             modelBuilder.Entity("BottleTrack.API.Fleet.Domain.Model.Aggregates.Driver", b =>
                 {
                     b.HasOne("BottleTrack.API.Iam.Domain.Model.Aggregates.Organization", null)
@@ -266,6 +691,83 @@ namespace BottleTrack.API.Migrations
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired()
                         .HasConstraintName("f_k_users_organizations_organization_id");
+                });
+
+            modelBuilder.Entity("BottleTrack.API.Incidents.Domain.Model.Entities.Evidence", b =>
+                {
+                    b.HasOne("BottleTrack.API.Incidents.Domain.Model.Aggregates.Incident", null)
+                        .WithMany("Evidences")
+                        .HasForeignKey("IncidentId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired()
+                        .HasConstraintName("f_k_evidences_incidents_incident_id");
+                });
+
+            modelBuilder.Entity("BottleTrack.API.Monitoring.Domain.Model.Aggregates.Alert", b =>
+                {
+                    b.HasOne("BottleTrack.API.Monitoring.Domain.Model.Aggregates.IotDevice", null)
+                        .WithMany()
+                        .HasForeignKey("IotDeviceId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired()
+                        .HasConstraintName("f_k_alerts__iot_device_iot_device_id");
+                });
+
+            modelBuilder.Entity("BottleTrack.API.Monitoring.Domain.Model.Aggregates.SensorReading", b =>
+                {
+                    b.HasOne("BottleTrack.API.Monitoring.Domain.Model.Aggregates.IotDevice", null)
+                        .WithMany()
+                        .HasForeignKey("IotDeviceId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired()
+                        .HasConstraintName("f_k_sensor_readings_iot_devices_iot_device_id");
+                });
+
+            modelBuilder.Entity("BottleTrack.API.Operations.Domain.Model.Aggregates.DeliveryPoint", b =>
+                {
+                    b.HasOne("BottleTrack.API.Iam.Domain.Model.Aggregates.Organization", null)
+                        .WithMany()
+                        .HasForeignKey("OrganizationId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired()
+                        .HasConstraintName("f_k_delivery_points_organizations_organization_id");
+                });
+
+            modelBuilder.Entity("BottleTrack.API.Operations.Domain.Model.Aggregates.TransportOperation", b =>
+                {
+                    b.HasOne("BottleTrack.API.Iam.Domain.Model.Aggregates.Organization", null)
+                        .WithMany()
+                        .HasForeignKey("OrganizationId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired()
+                        .HasConstraintName("f_k_transport_operations_organizations_organization_id");
+                });
+
+            modelBuilder.Entity("BottleTrack.API.Operations.Domain.Model.Entities.DeliveryStop", b =>
+                {
+                    b.HasOne("BottleTrack.API.Operations.Domain.Model.Aggregates.DeliveryPoint", null)
+                        .WithMany()
+                        .HasForeignKey("DeliveryPointId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired()
+                        .HasConstraintName("f_k_delivery_stops_delivery_points_delivery_point_id");
+
+                    b.HasOne("BottleTrack.API.Operations.Domain.Model.Aggregates.TransportOperation", null)
+                        .WithMany("DeliveryStops")
+                        .HasForeignKey("TransportOperationId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired()
+                        .HasConstraintName("f_k_delivery_stops_transport_operations_transport_operation_id");
+                });
+
+            modelBuilder.Entity("BottleTrack.API.Incidents.Domain.Model.Aggregates.Incident", b =>
+                {
+                    b.Navigation("Evidences");
+                });
+
+            modelBuilder.Entity("BottleTrack.API.Operations.Domain.Model.Aggregates.TransportOperation", b =>
+                {
+                    b.Navigation("DeliveryStops");
                 });
 #pragma warning restore 612, 618
         }
