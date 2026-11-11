@@ -6,5 +6,6 @@ public enum DriverError
     InvalidDocumentNumber,
     InvalidLicenseNumber,
     DocumentNumberAlreadyRegistered,
-    LicenseNumberAlreadyRegistered
+    LicenseNumberAlreadyRegistered,
+    DriverNotFound
 }

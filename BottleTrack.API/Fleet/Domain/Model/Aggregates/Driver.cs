@@ -44,6 +44,13 @@ public class Driver
         return driver;
     }
 
+    public void UpdateDetails(string firstName, string lastName, string phone)
+    {
+        FirstName = firstName.Trim();
+        LastName = lastName.Trim();
+        Phone = phone.Trim();
+    }
+
     public void Reserve()
     {
         if (Status != DriverStatus.Available)
