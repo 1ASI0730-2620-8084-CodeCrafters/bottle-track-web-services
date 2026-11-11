@@ -11,6 +11,11 @@ using BottleTrack.API.Iam.Application.Services;
 using BottleTrack.API.Iam.Domain.Repositories;
 using BottleTrack.API.Iam.Infrastructure.Hashing;
 using BottleTrack.API.Iam.Infrastructure.Persistence.EntityFrameworkCore.Repositories;
+using BottleTrack.API.Monitoring.Application.Internal.CommandServices;
+using BottleTrack.API.Monitoring.Application.Internal.QueryServices;
+using BottleTrack.API.Monitoring.Application.Services;
+using BottleTrack.API.Monitoring.Domain.Repositories;
+using BottleTrack.API.Monitoring.Infrastructure.Persistence.EntityFrameworkCore.Repositories;
 using BottleTrack.API.Resources;
 using BottleTrack.API.Shared.Domain.Repositories;
 using BottleTrack.API.Shared.Infrastructure.Interfaces.Asp.Configuration;
@@ -109,6 +114,16 @@ builder.Services.AddScoped<IVehicleCommandService, VehicleCommandService>();
 builder.Services.AddScoped<IVehicleQueryService, VehicleQueryService>();
 builder.Services.AddScoped<IDriverCommandService, DriverCommandService>();
 builder.Services.AddScoped<IDriverQueryService, DriverQueryService>();
+
+builder.Services.AddScoped<IIotDeviceRepository, IotDeviceRepository>();
+builder.Services.AddScoped<IIotDeviceCommandService, IotDeviceCommandService>();
+builder.Services.AddScoped<IIotDeviceQueryService, IotDeviceQueryService>();
+builder.Services.AddScoped<ISensorReadingRepository, SensorReadingRepository>();
+builder.Services.AddScoped<ISensorReadingCommandService, SensorReadingCommandService>();
+builder.Services.AddScoped<ISensorReadingQueryService, SensorReadingQueryService>();
+builder.Services.AddScoped<IAlertRepository, AlertRepository>();
+builder.Services.AddScoped<IAlertCommandService, AlertCommandService>();
+builder.Services.AddScoped<IAlertQueryService, AlertQueryService>();
 
 var app = builder.Build();
 
