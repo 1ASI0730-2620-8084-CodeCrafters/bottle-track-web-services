@@ -36,6 +36,15 @@
     <data name="SerialNumberAlreadyRegistered" xml:space="preserve">
         <value>Ya existe un dispositivo registrado con este número de serie.</value>
     </data>
+    <data name="InvalidSensorReadingData" xml:space="preserve">
+        <value>Los datos de la lectura del sensor no son válidos.</value>
+    </data>
+    <data name="InvalidAlertData" xml:space="preserve">
+        <value>Los datos de la alerta no son válidos.</value>
+    </data>
+    <data name="AlertNotFound" xml:space="preserve">
+        <value>La alerta no fue encontrada.</value>
+    </data>
     <data name="InvalidEmail" xml:space="preserve">
         <value>El correo electrónico no es válido.</value>
     </data>
