@@ -9,4 +9,7 @@ public interface IVehicleCommandService
 {
     Task<Result<Vehicle, VehicleError>> Handle(RegisterVehicleCommand command,
         CancellationToken cancellationToken = default);
+
+    Task<Result<Vehicle, VehicleError>> Handle(UpdateVehicleCommand command,
+        CancellationToken cancellationToken = default);
 }
