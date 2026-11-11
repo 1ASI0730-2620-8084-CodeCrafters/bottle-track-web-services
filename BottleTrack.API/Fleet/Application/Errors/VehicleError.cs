@@ -4,5 +4,6 @@ public enum VehicleError
 {
     InvalidVehicleData,
     InvalidPlateNumber,
-    PlateNumberAlreadyRegistered
+    PlateNumberAlreadyRegistered,
+    VehicleNotFound
 }
