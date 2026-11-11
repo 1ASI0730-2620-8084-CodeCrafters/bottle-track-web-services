@@ -27,6 +27,12 @@
     <data name="InvalidTaxId" xml:space="preserve">
         <value>El RUC debe tener 11 dígitos.</value>
     </data>
+    <data name="InvalidIncidentData" xml:space="preserve">
+        <value>Los datos de la incidencia no son válidos.</value>
+    </data>
+    <data name="IncidentNotFound" xml:space="preserve">
+        <value>La incidencia no fue encontrada.</value>
+    </data>
     <data name="InvalidEmail" xml:space="preserve">
         <value>El correo electrónico no es válido.</value>
     </data>
