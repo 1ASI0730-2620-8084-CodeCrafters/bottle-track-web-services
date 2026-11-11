@@ -20,7 +20,6 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Infrastructure;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Localization;
-using Scalar.AspNetCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -135,7 +134,7 @@ app.UseCors("Frontend");
 app.UseAuthorization();
 
 app.MapOpenApi();
-app.MapScalarApiReference();
+app.UseSwaggerUI(options => options.SwaggerEndpoint("/openapi/v1.json", "BottleTrack.API v1"));
 app.MapControllers();
 
 app.Run();
