@@ -27,6 +27,15 @@
     <data name="InvalidTaxId" xml:space="preserve">
         <value>The tax id must have 11 digits.</value>
     </data>
+    <data name="InvalidIotDeviceData" xml:space="preserve">
+        <value>The IoT device data is invalid.</value>
+    </data>
+    <data name="IotDeviceNotFound" xml:space="preserve">
+        <value>The IoT device was not found.</value>
+    </data>
+    <data name="SerialNumberAlreadyRegistered" xml:space="preserve">
+        <value>A device with this serial number is already registered.</value>
+    </data>
     <data name="InvalidEmail" xml:space="preserve">
         <value>The email address is not valid.</value>
     </data>

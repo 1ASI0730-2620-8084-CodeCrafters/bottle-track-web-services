@@ -27,6 +27,15 @@
     <data name="InvalidTaxId" xml:space="preserve">
         <value>El RUC debe tener 11 dígitos.</value>
     </data>
+    <data name="InvalidIotDeviceData" xml:space="preserve">
+        <value>Los datos del dispositivo IoT no son válidos.</value>
+    </data>
+    <data name="IotDeviceNotFound" xml:space="preserve">
+        <value>El dispositivo IoT no fue encontrado.</value>
+    </data>
+    <data name="SerialNumberAlreadyRegistered" xml:space="preserve">
+        <value>Ya existe un dispositivo registrado con este número de serie.</value>
+    </data>
     <data name="InvalidEmail" xml:space="preserve">
         <value>El correo electrónico no es válido.</value>
     </data>
