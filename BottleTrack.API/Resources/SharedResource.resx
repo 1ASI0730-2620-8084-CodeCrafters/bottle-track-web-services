@@ -27,6 +27,9 @@
     <data name="InvalidTaxId" xml:space="preserve">
         <value>The tax id must have 11 digits.</value>
     </data>
+    <data name="InvalidCredentials" xml:space="preserve">
+        <value>The email or the password is not correct.</value>
+    </data>
     <data name="InvalidEmail" xml:space="preserve">
         <value>The email address is not valid.</value>
     </data>
