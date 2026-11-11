@@ -11,6 +11,11 @@ using BottleTrack.API.Iam.Application.Services;
 using BottleTrack.API.Iam.Domain.Repositories;
 using BottleTrack.API.Iam.Infrastructure.Hashing;
 using BottleTrack.API.Iam.Infrastructure.Persistence.EntityFrameworkCore.Repositories;
+using BottleTrack.API.Operations.Application.Internal.CommandServices;
+using BottleTrack.API.Operations.Application.Internal.QueryServices;
+using BottleTrack.API.Operations.Application.Services;
+using BottleTrack.API.Operations.Domain.Repositories;
+using BottleTrack.API.Operations.Infrastructure.Persistence.EntityFrameworkCore.Repositories;
 using BottleTrack.API.Resources;
 using BottleTrack.API.Shared.Domain.Repositories;
 using BottleTrack.API.Shared.Infrastructure.Interfaces.Asp.Configuration;
@@ -109,6 +114,13 @@ builder.Services.AddScoped<IVehicleCommandService, VehicleCommandService>();
 builder.Services.AddScoped<IVehicleQueryService, VehicleQueryService>();
 builder.Services.AddScoped<IDriverCommandService, DriverCommandService>();
 builder.Services.AddScoped<IDriverQueryService, DriverQueryService>();
+
+builder.Services.AddScoped<IDeliveryPointRepository, DeliveryPointRepository>();
+builder.Services.AddScoped<IDeliveryPointCommandService, DeliveryPointCommandService>();
+builder.Services.AddScoped<IDeliveryPointQueryService, DeliveryPointQueryService>();
+builder.Services.AddScoped<ITransportOperationRepository, TransportOperationRepository>();
+builder.Services.AddScoped<ITransportOperationCommandService, TransportOperationCommandService>();
+builder.Services.AddScoped<ITransportOperationQueryService, TransportOperationQueryService>();
 
 var app = builder.Build();
 
