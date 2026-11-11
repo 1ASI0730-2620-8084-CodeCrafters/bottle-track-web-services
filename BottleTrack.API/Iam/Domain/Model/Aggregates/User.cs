@@ -43,6 +43,13 @@ public class User
         return user;
     }
 
+    public void UpdateProfile(string firstName, string lastName, EmailAddress email)
+    {
+        FirstName = firstName.Trim();
+        LastName = lastName.Trim();
+        Email = email;
+    }
+
     public void AssignRole(UserRole role)
     {
         Role = role;
