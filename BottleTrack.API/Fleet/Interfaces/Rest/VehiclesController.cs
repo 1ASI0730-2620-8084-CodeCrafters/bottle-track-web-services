@@ -2,6 +2,7 @@ using System.Net.Mime;
 using BottleTrack.API.Fleet.Application.Errors;
 using BottleTrack.API.Fleet.Application.Services;
 using BottleTrack.API.Fleet.Domain.Model.Aggregates;
+using BottleTrack.API.Fleet.Domain.Model.Commands;
 using BottleTrack.API.Fleet.Domain.Model.Queries;
 using BottleTrack.API.Fleet.Interfaces.Rest.Resources;
 using BottleTrack.API.Fleet.Interfaces.Rest.Transform;
@@ -73,9 +74,27 @@ public class VehiclesController : ControllerBase
         return Ok(VehicleAssembler.ToResource(vehicle));
     }
 
+    [HttpPut("{id:guid}")]
+    [ProducesResponseType(typeof(VehicleResource), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status404NotFound)]
+    public async Task<ActionResult> UpdateVehicle(Guid id, [FromBody] UpdateVehicleResource resource,
+        CancellationToken cancellationToken)
+    {
+        var command = new UpdateVehicleCommand(id, resource.Brand, resource.Model, resource.CapacityInBoxes);
+        var result = await vehicleCommandService.Handle(command, cancellationToken);
+
+        return result.Fold<ActionResult>(
+            vehicle => Ok(VehicleAssembler.ToResource(vehicle)),
+            error => ErrorResult(error));
+    }
+
     private ActionResult ErrorResult(VehicleError error)
     {
         int statusCode = StatusCodes.Status400BadRequest;
+
+        if (error == VehicleError.VehicleNotFound)
+            statusCode = StatusCodes.Status404NotFound;
 
         if (error == VehicleError.PlateNumberAlreadyRegistered)
             statusCode = StatusCodes.Status409Conflict;

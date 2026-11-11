@@ -49,4 +49,23 @@ public class VehicleCommandService : IVehicleCommandService
 
         return Result<Vehicle, VehicleError>.Success(vehicle);
     }
+
+    public async Task<Result<Vehicle, VehicleError>> Handle(UpdateVehicleCommand command,
+        CancellationToken cancellationToken = default)
+    {
+        if (string.IsNullOrWhiteSpace(command.Brand) || string.IsNullOrWhiteSpace(command.Model) ||
+            command.CapacityInBoxes <= 0)
+            return Result<Vehicle, VehicleError>.Failure(VehicleError.InvalidVehicleData);
+
+        Vehicle? vehicle = await vehicleRepository.FindByIdAsync(command.VehicleId, cancellationToken);
+        if (vehicle == null)
+            return Result<Vehicle, VehicleError>.Failure(VehicleError.VehicleNotFound);
+
+        vehicle.UpdateDetails(command.Brand, command.Model, command.CapacityInBoxes);
+
+        vehicleRepository.Update(vehicle);
+        await unitOfWork.CompleteAsync(cancellationToken);
+
+        return Result<Vehicle, VehicleError>.Success(vehicle);
+    }
 }

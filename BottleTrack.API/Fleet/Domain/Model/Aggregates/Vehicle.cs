@@ -39,6 +39,13 @@ public class Vehicle
         return vehicle;
     }
 
+    public void UpdateDetails(string brand, string model, int capacityInBoxes)
+    {
+        Brand = brand.Trim();
+        Model = model.Trim();
+        CapacityInBoxes = capacityInBoxes;
+    }
+
     public void Reserve()
     {
         if (Status != VehicleStatus.Available)
