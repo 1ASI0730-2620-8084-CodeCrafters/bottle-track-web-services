@@ -59,5 +59,22 @@ public class OrganizationCommandService : IOrganizationCommandService
         return Result<Organization, OrganizationError>.Success(organization);
     }
 
+    public async Task<Result<Organization, OrganizationError>> Handle(UpdateOrganizationCommand command,
+        CancellationToken cancellationToken = default)
+    {
+        if (string.IsNullOrWhiteSpace(command.BusinessName))
+            return Result<Organization, OrganizationError>.Failure(OrganizationError.BusinessNameRequired);
 
+        Organization? organization = await organizationRepository.FindByIdAsync(command.OrganizationId,
+            cancellationToken);
+        if (organization == null)
+            return Result<Organization, OrganizationError>.Failure(OrganizationError.OrganizationNotFound);
+
+        organization.UpdateProfile(command.BusinessName, command.Phone, command.Address);
+
+        organizationRepository.Update(organization);
+        await unitOfWork.CompleteAsync(cancellationToken);
+
+        return Result<Organization, OrganizationError>.Success(organization);
+    }
 }

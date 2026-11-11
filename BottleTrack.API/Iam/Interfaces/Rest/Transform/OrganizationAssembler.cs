@@ -12,6 +12,11 @@ public static class OrganizationAssembler
             resource.Address);
     }
 
+    public static UpdateOrganizationCommand ToCommand(Guid id, UpdateOrganizationResource resource)
+    {
+        return new UpdateOrganizationCommand(id, resource.BusinessName, resource.Phone, resource.Address);
+    }
+
     public static OrganizationResource ToResource(Organization organization)
     {
         OrganizationResource resource = new OrganizationResource();

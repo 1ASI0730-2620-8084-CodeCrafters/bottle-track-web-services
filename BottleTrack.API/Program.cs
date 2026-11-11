@@ -30,7 +30,10 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Infrastructure;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Localization;
-using Scalar.AspNetCore;
+using System.Text;
+using BottleTrack.API.Iam.Infrastructure.Tokens;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -120,6 +123,10 @@ builder.Services.AddScoped<IVehicleQueryService, VehicleQueryService>();
 builder.Services.AddScoped<IDriverCommandService, DriverCommandService>();
 builder.Services.AddScoped<IDriverQueryService, DriverQueryService>();
 
+builder.Services.Configure<JwtSettings>(builder.Configuration.GetSection("Jwt"));
+builder.Services.AddScoped<ITokenService, JwtTokenService>();
+builder.Services.AddScoped<IAuthenticationCommandService, AuthenticationCommandService>();
+
 builder.Services.AddScoped<IIncidentRepository, IncidentRepository>();
 builder.Services.AddScoped<IIncidentCommandService, IncidentCommandService>();
 builder.Services.AddScoped<IIncidentQueryService, IncidentQueryService>();
@@ -133,6 +140,24 @@ builder.Services.AddScoped<ISensorReadingQueryService, SensorReadingQueryService
 builder.Services.AddScoped<IAlertRepository, AlertRepository>();
 builder.Services.AddScoped<IAlertCommandService, AlertCommandService>();
 builder.Services.AddScoped<IAlertQueryService, AlertQueryService>();
+
+JwtSettings? jwtSettings = builder.Configuration.GetSection("Jwt").Get<JwtSettings>();
+if (jwtSettings == null)
+    jwtSettings = new JwtSettings();
+
+builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+    .AddJwtBearer(options =>
+    {
+        TokenValidationParameters parameters = new TokenValidationParameters();
+        parameters.ValidateIssuer = true;
+        parameters.ValidIssuer = jwtSettings.Issuer;
+        parameters.ValidateAudience = true;
+        parameters.ValidAudience = jwtSettings.Audience;
+        parameters.ValidateIssuerSigningKey = true;
+        parameters.IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtSettings.Secret));
+        parameters.ValidateLifetime = true;
+        options.TokenValidationParameters = parameters;
+    });
 
 var app = builder.Build();
 
@@ -156,10 +181,11 @@ app.UseHttpsRedirection();
 
 app.UseCors("Frontend");
 
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapOpenApi();
-app.MapScalarApiReference();
+app.UseSwaggerUI(options => options.SwaggerEndpoint("/openapi/v1.json", "BottleTrack.API v1"));
 app.MapControllers();
 
 app.Run();

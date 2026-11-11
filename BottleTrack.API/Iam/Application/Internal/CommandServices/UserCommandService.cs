@@ -64,5 +64,50 @@ public class UserCommandService : IUserCommandService
         return Result<User, UserError>.Success(user);
     }
 
+    public async Task<Result<User, UserError>> Handle(UpdateUserCommand command,
+        CancellationToken cancellationToken = default)
+    {
+        if (string.IsNullOrWhiteSpace(command.FirstName) || string.IsNullOrWhiteSpace(command.LastName))
+            return Result<User, UserError>.Failure(UserError.InvalidUserData);
 
+        User? user = await userRepository.FindByIdAsync(command.UserId, cancellationToken);
+        if (user == null)
+            return Result<User, UserError>.Failure(UserError.UserNotFound);
+
+        EmailAddress email;
+        try
+        {
+            email = new EmailAddress(command.Email);
+        }
+        catch (ArgumentException)
+        {
+            return Result<User, UserError>.Failure(UserError.InvalidEmail);
+        }
+
+        User? existingUser = await userRepository.FindByEmailAsync(email, cancellationToken);
+        if (existingUser != null && existingUser.Id != command.UserId)
+            return Result<User, UserError>.Failure(UserError.EmailAlreadyRegistered);
+
+        user.UpdateProfile(command.FirstName, command.LastName, email);
+
+        userRepository.Update(user);
+        await unitOfWork.CompleteAsync(cancellationToken);
+
+        return Result<User, UserError>.Success(user);
+    }
+
+    public async Task<Result<User, UserError>> Handle(AssignUserRoleCommand command,
+        CancellationToken cancellationToken = default)
+    {
+        User? user = await userRepository.FindByIdAsync(command.UserId, cancellationToken);
+        if (user == null)
+            return Result<User, UserError>.Failure(UserError.UserNotFound);
+
+        user.AssignRole(command.Role);
+
+        userRepository.Update(user);
+        await unitOfWork.CompleteAsync(cancellationToken);
+
+        return Result<User, UserError>.Success(user);
+    }
 }

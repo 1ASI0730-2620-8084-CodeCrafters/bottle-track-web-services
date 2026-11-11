@@ -7,5 +7,6 @@ public enum UserError
     PasswordTooShort,
     OrganizationNotFound,
     EmailAlreadyRegistered,
-    UserNotFound
+    UserNotFound,
+    InvalidCredentials
 }

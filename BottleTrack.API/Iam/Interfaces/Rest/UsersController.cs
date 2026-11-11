@@ -74,6 +74,36 @@ public class UsersController : ControllerBase
         return Ok(UserAssembler.ToResource(user));
     }
 
+    [HttpPut("{id:guid}")]
+    [ProducesResponseType(typeof(UserResource), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status404NotFound)]
+    [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status409Conflict)]
+    public async Task<ActionResult> UpdateUser(Guid id, [FromBody] UpdateUserResource resource,
+        CancellationToken cancellationToken)
+    {
+        var command = new UpdateUserCommand(id, resource.FirstName, resource.LastName, resource.Email);
+        var result = await userCommandService.Handle(command, cancellationToken);
+
+        return result.Fold<ActionResult>(
+            user => Ok(UserAssembler.ToResource(user)),
+            error => ErrorResult(error));
+    }
+
+    [HttpPut("{id:guid}/role")]
+    [ProducesResponseType(typeof(UserResource), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status404NotFound)]
+    public async Task<ActionResult> AssignUserRole(Guid id, [FromBody] AssignRoleResource resource,
+        CancellationToken cancellationToken)
+    {
+        var command = new AssignUserRoleCommand(id, resource.Role);
+        var result = await userCommandService.Handle(command, cancellationToken);
+
+        return result.Fold<ActionResult>(
+            user => Ok(UserAssembler.ToResource(user)),
+            error => ErrorResult(error));
+    }
+
     private ActionResult ErrorResult(UserError error)
     {
         int statusCode = StatusCodes.Status400BadRequest;
