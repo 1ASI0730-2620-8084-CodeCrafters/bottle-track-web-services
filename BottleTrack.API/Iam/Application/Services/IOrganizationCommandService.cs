@@ -9,4 +9,7 @@ public interface IOrganizationCommandService
 {
     Task<Result<Organization, OrganizationError>> Handle(RegisterOrganizationCommand command,
         CancellationToken cancellationToken = default);
+
+    Task<Result<Organization, OrganizationError>> Handle(UpdateOrganizationCommand command,
+        CancellationToken cancellationToken = default);
 }

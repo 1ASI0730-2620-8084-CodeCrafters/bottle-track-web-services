@@ -59,6 +59,21 @@ public class OrganizationsController : ControllerBase
         return Ok(OrganizationAssembler.ToResource(organization));
     }
 
+    [HttpPut("{id:guid}")]
+    [ProducesResponseType(typeof(OrganizationResource), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status404NotFound)]
+    public async Task<ActionResult> UpdateOrganization(Guid id, [FromBody] UpdateOrganizationResource resource,
+        CancellationToken cancellationToken)
+    {
+        var command = OrganizationAssembler.ToCommand(id, resource);
+        var result = await organizationCommandService.Handle(command, cancellationToken);
+
+        return result.Fold<ActionResult>(
+            organization => Ok(OrganizationAssembler.ToResource(organization)),
+            error => ErrorResult(error));
+    }
+
     private ActionResult ErrorResult(OrganizationError error)
     {
         int statusCode = StatusCodes.Status400BadRequest;
