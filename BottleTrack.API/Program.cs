@@ -21,6 +21,11 @@ using BottleTrack.API.Monitoring.Application.Internal.QueryServices;
 using BottleTrack.API.Monitoring.Application.Services;
 using BottleTrack.API.Monitoring.Domain.Repositories;
 using BottleTrack.API.Monitoring.Infrastructure.Persistence.EntityFrameworkCore.Repositories;
+using BottleTrack.API.Operations.Application.Internal.CommandServices;
+using BottleTrack.API.Operations.Application.Internal.QueryServices;
+using BottleTrack.API.Operations.Application.Services;
+using BottleTrack.API.Operations.Domain.Repositories;
+using BottleTrack.API.Operations.Infrastructure.Persistence.EntityFrameworkCore.Repositories;
 using BottleTrack.API.Resources;
 using BottleTrack.API.Shared.Domain.Repositories;
 using BottleTrack.API.Shared.Infrastructure.Interfaces.Asp.Configuration;
@@ -130,6 +135,13 @@ builder.Services.AddScoped<IAuthenticationCommandService, AuthenticationCommandS
 builder.Services.AddScoped<IIncidentRepository, IncidentRepository>();
 builder.Services.AddScoped<IIncidentCommandService, IncidentCommandService>();
 builder.Services.AddScoped<IIncidentQueryService, IncidentQueryService>();
+
+builder.Services.AddScoped<IDeliveryPointRepository, DeliveryPointRepository>();
+builder.Services.AddScoped<IDeliveryPointCommandService, DeliveryPointCommandService>();
+builder.Services.AddScoped<IDeliveryPointQueryService, DeliveryPointQueryService>();
+builder.Services.AddScoped<ITransportOperationRepository, TransportOperationRepository>();
+builder.Services.AddScoped<ITransportOperationCommandService, TransportOperationCommandService>();
+builder.Services.AddScoped<ITransportOperationQueryService, TransportOperationQueryService>();
 
 builder.Services.AddScoped<IIotDeviceRepository, IotDeviceRepository>();
 builder.Services.AddScoped<IIotDeviceCommandService, IotDeviceCommandService>();

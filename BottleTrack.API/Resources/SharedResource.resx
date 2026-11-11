@@ -45,6 +45,18 @@
     <data name="AlertNotFound" xml:space="preserve">
         <value>The alert was not found.</value>
     </data>
+    <data name="InvalidDeliveryPointData" xml:space="preserve">
+        <value>The delivery point data is invalid.</value>
+    </data>
+    <data name="DeliveryPointNotFound" xml:space="preserve">
+        <value>The delivery point was not found.</value>
+    </data>
+    <data name="InvalidTransportOperationData" xml:space="preserve">
+        <value>The transport operation data is invalid.</value>
+    </data>
+    <data name="TransportOperationNotFound" xml:space="preserve">
+        <value>The transport operation was not found.</value>
+    </data>
     <data name="InvalidIncidentData" xml:space="preserve">
         <value>The incident data is invalid.</value>
     </data>
