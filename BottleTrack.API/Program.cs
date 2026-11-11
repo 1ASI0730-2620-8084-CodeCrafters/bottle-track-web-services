@@ -173,10 +173,13 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
 
 var app = builder.Build();
 
-using (var scope = app.Services.CreateScope())
+if (!app.Environment.IsEnvironment("Testing"))
 {
-    var context = scope.ServiceProvider.GetRequiredService<AppDbContext>();
-    context.Database.Migrate();
+    using (var scope = app.Services.CreateScope())
+    {
+        var context = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+        context.Database.Migrate();
+    }
 }
 
 app.UseExceptionHandler();
@@ -201,3 +204,7 @@ app.UseSwaggerUI(options => options.SwaggerEndpoint("/openapi/v1.json", "BottleT
 app.MapControllers();
 
 app.Run();
+
+public partial class Program
+{
+}
