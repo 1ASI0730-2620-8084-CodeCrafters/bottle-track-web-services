@@ -181,7 +181,7 @@ using (var scope = app.Services.CreateScope())
 
 app.UseExceptionHandler();
 
-string[] supportedCultures = new string[] { "en", "en-US", "es", "es-PE" };
+string[] supportedCultures = new string[] { "en", "en-US", "es", "es-419" };
 var localizationOptions = new RequestLocalizationOptions()
     .SetDefaultCulture(supportedCultures[0])
     .AddSupportedCultures(supportedCultures)
