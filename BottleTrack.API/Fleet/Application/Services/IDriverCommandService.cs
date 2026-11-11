@@ -9,4 +9,7 @@ public interface IDriverCommandService
 {
     Task<Result<Driver, DriverError>> Handle(RegisterDriverCommand command,
         CancellationToken cancellationToken = default);
+
+    Task<Result<Driver, DriverError>> Handle(UpdateDriverCommand command,
+        CancellationToken cancellationToken = default);
 }

@@ -60,6 +60,24 @@ public class DriverCommandService : IDriverCommandService
         return Result<Driver, DriverError>.Success(driver);
     }
 
+    public async Task<Result<Driver, DriverError>> Handle(UpdateDriverCommand command,
+        CancellationToken cancellationToken = default)
+    {
+        if (string.IsNullOrWhiteSpace(command.FirstName) || string.IsNullOrWhiteSpace(command.LastName))
+            return Result<Driver, DriverError>.Failure(DriverError.InvalidDriverData);
+
+        Driver? driver = await driverRepository.FindByIdAsync(command.DriverId, cancellationToken);
+        if (driver == null)
+            return Result<Driver, DriverError>.Failure(DriverError.DriverNotFound);
+
+        driver.UpdateDetails(command.FirstName, command.LastName, command.Phone);
+
+        driverRepository.Update(driver);
+        await unitOfWork.CompleteAsync(cancellationToken);
+
+        return Result<Driver, DriverError>.Success(driver);
+    }
+
     private bool IsValidDocumentNumber(string documentNumber)
     {
         if (string.IsNullOrWhiteSpace(documentNumber))

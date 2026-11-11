@@ -2,6 +2,7 @@ using System.Net.Mime;
 using BottleTrack.API.Fleet.Application.Errors;
 using BottleTrack.API.Fleet.Application.Services;
 using BottleTrack.API.Fleet.Domain.Model.Aggregates;
+using BottleTrack.API.Fleet.Domain.Model.Commands;
 using BottleTrack.API.Fleet.Domain.Model.Queries;
 using BottleTrack.API.Fleet.Interfaces.Rest.Resources;
 using BottleTrack.API.Fleet.Interfaces.Rest.Transform;
@@ -73,9 +74,27 @@ public class DriversController : ControllerBase
         return Ok(DriverAssembler.ToResource(driver));
     }
 
+    [HttpPut("{id:guid}")]
+    [ProducesResponseType(typeof(DriverResource), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status404NotFound)]
+    public async Task<ActionResult> UpdateDriver(Guid id, [FromBody] UpdateDriverResource resource,
+        CancellationToken cancellationToken)
+    {
+        var command = new UpdateDriverCommand(id, resource.FirstName, resource.LastName, resource.Phone);
+        var result = await driverCommandService.Handle(command, cancellationToken);
+
+        return result.Fold<ActionResult>(
+            driver => Ok(DriverAssembler.ToResource(driver)),
+            error => ErrorResult(error));
+    }
+
     private ActionResult ErrorResult(DriverError error)
     {
         int statusCode = StatusCodes.Status400BadRequest;
+
+        if (error == DriverError.DriverNotFound)
+            statusCode = StatusCodes.Status404NotFound;
 
         if (error == DriverError.DocumentNumberAlreadyRegistered || error == DriverError.LicenseNumberAlreadyRegistered)
             statusCode = StatusCodes.Status409Conflict;
