@@ -20,6 +20,10 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Infrastructure;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Localization;
+using System.Text;
+using BottleTrack.API.Iam.Infrastructure.Tokens;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -109,6 +113,28 @@ builder.Services.AddScoped<IVehicleQueryService, VehicleQueryService>();
 builder.Services.AddScoped<IDriverCommandService, DriverCommandService>();
 builder.Services.AddScoped<IDriverQueryService, DriverQueryService>();
 
+builder.Services.Configure<JwtSettings>(builder.Configuration.GetSection("Jwt"));
+builder.Services.AddScoped<ITokenService, JwtTokenService>();
+builder.Services.AddScoped<IAuthenticationCommandService, AuthenticationCommandService>();
+
+JwtSettings? jwtSettings = builder.Configuration.GetSection("Jwt").Get<JwtSettings>();
+if (jwtSettings == null)
+    jwtSettings = new JwtSettings();
+
+builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+    .AddJwtBearer(options =>
+    {
+        TokenValidationParameters parameters = new TokenValidationParameters();
+        parameters.ValidateIssuer = true;
+        parameters.ValidIssuer = jwtSettings.Issuer;
+        parameters.ValidateAudience = true;
+        parameters.ValidAudience = jwtSettings.Audience;
+        parameters.ValidateIssuerSigningKey = true;
+        parameters.IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtSettings.Secret));
+        parameters.ValidateLifetime = true;
+        options.TokenValidationParameters = parameters;
+    });
+
 var app = builder.Build();
 
 using (var scope = app.Services.CreateScope())
@@ -131,6 +157,7 @@ app.UseHttpsRedirection();
 
 app.UseCors("Frontend");
 
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapOpenApi();
