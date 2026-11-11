@@ -358,6 +358,141 @@ namespace BottleTrack.API.Migrations
                     b.ToTable("evidences");
                 });
 
+            modelBuilder.Entity("BottleTrack.API.Monitoring.Domain.Model.Aggregates.Alert", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .HasColumnType("char(36)")
+                        .HasColumnName("id");
+
+                    b.Property<DateTime?>("AcknowledgedAt")
+                        .HasColumnType("datetime(6)")
+                        .HasColumnName("acknowledged_at");
+
+                    b.Property<Guid?>("AcknowledgedBy")
+                        .HasColumnType("char(36)")
+                        .HasColumnName("acknowledged_by");
+
+                    b.Property<Guid>("IotDeviceId")
+                        .HasColumnType("char(36)")
+                        .HasColumnName("iot_device_id");
+
+                    b.Property<DateTime>("RaisedAt")
+                        .HasColumnType("datetime(6)")
+                        .HasColumnName("raised_at");
+
+                    b.Property<Guid>("TransportOperationId")
+                        .HasColumnType("char(36)")
+                        .HasColumnName("transport_operation_id");
+
+                    b.Property<string>("Type")
+                        .IsRequired()
+                        .HasMaxLength(30)
+                        .HasColumnType("varchar(30)")
+                        .HasColumnName("type");
+
+                    b.HasKey("Id")
+                        .HasName("p_k_alerts");
+
+                    b.HasIndex("IotDeviceId")
+                        .HasDatabaseName("i_x_alerts_iot_device_id");
+
+                    b.ToTable("alerts");
+                });
+
+            modelBuilder.Entity("BottleTrack.API.Monitoring.Domain.Model.Aggregates.IotDevice", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .HasColumnType("char(36)")
+                        .HasColumnName("id");
+
+                    b.Property<decimal>("ImpactThreshold")
+                        .HasPrecision(5, 2)
+                        .HasColumnType("decimal(5,2)")
+                        .HasColumnName("impact_threshold");
+
+                    b.Property<decimal>("SafeTemperatureMax")
+                        .HasPrecision(5, 2)
+                        .HasColumnType("decimal(5,2)")
+                        .HasColumnName("safe_temperature_max");
+
+                    b.Property<decimal>("SafeTemperatureMin")
+                        .HasPrecision(5, 2)
+                        .HasColumnType("decimal(5,2)")
+                        .HasColumnName("safe_temperature_min");
+
+                    b.Property<string>("SerialNumber")
+                        .IsRequired()
+                        .HasMaxLength(60)
+                        .HasColumnType("varchar(60)")
+                        .HasColumnName("serial_number");
+
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .HasMaxLength(20)
+                        .HasColumnType("varchar(20)")
+                        .HasColumnName("status");
+
+                    b.Property<Guid?>("VehicleId")
+                        .HasColumnType("char(36)")
+                        .HasColumnName("vehicle_id");
+
+                    b.HasKey("Id")
+                        .HasName("p_k_iot_devices");
+
+                    b.HasIndex("SerialNumber")
+                        .IsUnique()
+                        .HasDatabaseName("i_x_iot_devices_serial_number");
+
+                    b.ToTable("iot_devices");
+                });
+
+            modelBuilder.Entity("BottleTrack.API.Monitoring.Domain.Model.Aggregates.SensorReading", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .HasColumnType("char(36)")
+                        .HasColumnName("id");
+
+                    b.Property<decimal?>("ImpactForce")
+                        .HasPrecision(5, 2)
+                        .HasColumnType("decimal(5,2)")
+                        .HasColumnName("impact_force");
+
+                    b.Property<Guid>("IotDeviceId")
+                        .HasColumnType("char(36)")
+                        .HasColumnName("iot_device_id");
+
+                    b.Property<decimal?>("Latitude")
+                        .HasPrecision(9, 6)
+                        .HasColumnType("decimal(9,6)")
+                        .HasColumnName("latitude");
+
+                    b.Property<decimal?>("Longitude")
+                        .HasPrecision(9, 6)
+                        .HasColumnType("decimal(9,6)")
+                        .HasColumnName("longitude");
+
+                    b.Property<DateTime>("RecordedAt")
+                        .HasColumnType("datetime(6)")
+                        .HasColumnName("recorded_at");
+
+                    b.Property<decimal?>("TemperatureCelsius")
+                        .HasPrecision(5, 2)
+                        .HasColumnType("decimal(5,2)")
+                        .HasColumnName("temperature_celsius");
+
+                    b.Property<Guid?>("TransportOperationId")
+                        .HasColumnType("char(36)")
+                        .HasColumnName("transport_operation_id");
+
+                    b.HasKey("Id")
+                        .HasName("p_k_sensor_readings");
+
+                    b.HasIndex("IotDeviceId")
+                        .HasDatabaseName("i_x_sensor_readings_iot_device_id");
+
+                    b.ToTable("sensor_readings");
+                });
+
             modelBuilder.Entity("BottleTrack.API.Operations.Domain.Model.Aggregates.DeliveryPoint", b =>
                 {
                     b.Property<Guid>("Id")
@@ -566,6 +701,26 @@ namespace BottleTrack.API.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired()
                         .HasConstraintName("f_k_evidences_incidents_incident_id");
+                });
+
+            modelBuilder.Entity("BottleTrack.API.Monitoring.Domain.Model.Aggregates.Alert", b =>
+                {
+                    b.HasOne("BottleTrack.API.Monitoring.Domain.Model.Aggregates.IotDevice", null)
+                        .WithMany()
+                        .HasForeignKey("IotDeviceId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired()
+                        .HasConstraintName("f_k_alerts__iot_device_iot_device_id");
+                });
+
+            modelBuilder.Entity("BottleTrack.API.Monitoring.Domain.Model.Aggregates.SensorReading", b =>
+                {
+                    b.HasOne("BottleTrack.API.Monitoring.Domain.Model.Aggregates.IotDevice", null)
+                        .WithMany()
+                        .HasForeignKey("IotDeviceId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired()
+                        .HasConstraintName("f_k_sensor_readings_iot_devices_iot_device_id");
                 });
 
             modelBuilder.Entity("BottleTrack.API.Operations.Domain.Model.Aggregates.DeliveryPoint", b =>
