@@ -21,4 +21,100 @@
     <data name="UnexpectedErrorProcessingRequest" xml:space="preserve">
         <value>Ocurrió un error inesperado al procesar su solicitud.</value>
     </data>
+    <data name="BusinessNameRequired" xml:space="preserve">
+        <value>La razón social es obligatoria.</value>
+    </data>
+    <data name="InvalidTaxId" xml:space="preserve">
+        <value>El RUC debe tener 11 dígitos.</value>
+    </data>
+    <data name="InvalidIotDeviceData" xml:space="preserve">
+        <value>Los datos del dispositivo IoT no son válidos.</value>
+    </data>
+    <data name="IotDeviceNotFound" xml:space="preserve">
+        <value>El dispositivo IoT no fue encontrado.</value>
+    </data>
+    <data name="SerialNumberAlreadyRegistered" xml:space="preserve">
+        <value>Ya existe un dispositivo registrado con este número de serie.</value>
+    </data>
+    <data name="InvalidSensorReadingData" xml:space="preserve">
+        <value>Los datos de la lectura del sensor no son válidos.</value>
+    </data>
+    <data name="InvalidAlertData" xml:space="preserve">
+        <value>Los datos de la alerta no son válidos.</value>
+    </data>
+    <data name="AlertNotFound" xml:space="preserve">
+        <value>La alerta no fue encontrada.</value>
+    </data>
+    <data name="InvalidDeliveryPointData" xml:space="preserve">
+        <value>Los datos del punto de entrega no son válidos.</value>
+    </data>
+    <data name="DeliveryPointNotFound" xml:space="preserve">
+        <value>El punto de entrega no fue encontrado.</value>
+    </data>
+    <data name="InvalidTransportOperationData" xml:space="preserve">
+        <value>Los datos de la operación de transporte no son válidos.</value>
+    </data>
+    <data name="TransportOperationNotFound" xml:space="preserve">
+        <value>La operación de transporte no fue encontrada.</value>
+    </data>
+    <data name="InvalidIncidentData" xml:space="preserve">
+        <value>Los datos de la incidencia no son válidos.</value>
+    </data>
+    <data name="IncidentNotFound" xml:space="preserve">
+        <value>La incidencia no fue encontrada.</value>
+    </data>
+    <data name="InvalidCredentials" xml:space="preserve">
+        <value>El correo o la contraseña no son correctos.</value>
+    </data>
+    <data name="InvalidEmail" xml:space="preserve">
+        <value>El correo electrónico no es válido.</value>
+    </data>
+    <data name="TaxIdAlreadyRegistered" xml:space="preserve">
+        <value>Ya existe una organización registrada con este RUC.</value>
+    </data>
+    <data name="OrganizationNotFound" xml:space="preserve">
+        <value>No se encontró la organización.</value>
+    </data>
+    <data name="InvalidUserData" xml:space="preserve">
+        <value>El nombre y el apellido son obligatorios.</value>
+    </data>
+    <data name="PasswordTooShort" xml:space="preserve">
+        <value>La contraseña debe tener al menos 8 caracteres.</value>
+    </data>
+    <data name="EmailAlreadyRegistered" xml:space="preserve">
+        <value>Este correo electrónico ya está registrado.</value>
+    </data>
+    <data name="UserNotFound" xml:space="preserve">
+        <value>No se encontró el usuario.</value>
+    </data>
+    <data name="InvalidVehicleData" xml:space="preserve">
+        <value>La marca, el modelo y una capacidad mayor que cero son obligatorios.</value>
+    </data>
+    <data name="InvalidPlateNumber" xml:space="preserve">
+        <value>La placa debe tener el formato AAA-111.</value>
+    </data>
+    <data name="PlateNumberAlreadyRegistered" xml:space="preserve">
+        <value>Ya existe un vehículo registrado con esta placa.</value>
+    </data>
+    <data name="VehicleNotFound" xml:space="preserve">
+        <value>No se encontró el vehículo.</value>
+    </data>
+    <data name="InvalidDriverData" xml:space="preserve">
+        <value>El nombre y el apellido son obligatorios.</value>
+    </data>
+    <data name="InvalidDocumentNumber" xml:space="preserve">
+        <value>El DNI debe tener 8 dígitos.</value>
+    </data>
+    <data name="InvalidLicenseNumber" xml:space="preserve">
+        <value>La licencia debe ser una letra seguida de 8 dígitos.</value>
+    </data>
+    <data name="DocumentNumberAlreadyRegistered" xml:space="preserve">
+        <value>Ya existe un conductor registrado con este DNI.</value>
+    </data>
+    <data name="LicenseNumberAlreadyRegistered" xml:space="preserve">
+        <value>Ya existe un conductor registrado con esta licencia.</value>
+    </data>
+    <data name="DriverNotFound" xml:space="preserve">
+        <value>No se encontró el conductor.</value>
+    </data>
 </root>

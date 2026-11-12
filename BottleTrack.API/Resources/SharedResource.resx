@@ -21,4 +21,100 @@
     <data name="UnexpectedErrorProcessingRequest" xml:space="preserve">
         <value>An unexpected error occurred while processing your request.</value>
     </data>
+    <data name="BusinessNameRequired" xml:space="preserve">
+        <value>The business name is required.</value>
+    </data>
+    <data name="InvalidTaxId" xml:space="preserve">
+        <value>The tax id must have 11 digits.</value>
+    </data>
+    <data name="InvalidIotDeviceData" xml:space="preserve">
+        <value>The IoT device data is invalid.</value>
+    </data>
+    <data name="IotDeviceNotFound" xml:space="preserve">
+        <value>The IoT device was not found.</value>
+    </data>
+    <data name="SerialNumberAlreadyRegistered" xml:space="preserve">
+        <value>A device with this serial number is already registered.</value>
+    </data>
+    <data name="InvalidSensorReadingData" xml:space="preserve">
+        <value>The sensor reading data is invalid.</value>
+    </data>
+    <data name="InvalidAlertData" xml:space="preserve">
+        <value>The alert data is invalid.</value>
+    </data>
+    <data name="AlertNotFound" xml:space="preserve">
+        <value>The alert was not found.</value>
+    </data>
+    <data name="InvalidDeliveryPointData" xml:space="preserve">
+        <value>The delivery point data is invalid.</value>
+    </data>
+    <data name="DeliveryPointNotFound" xml:space="preserve">
+        <value>The delivery point was not found.</value>
+    </data>
+    <data name="InvalidTransportOperationData" xml:space="preserve">
+        <value>The transport operation data is invalid.</value>
+    </data>
+    <data name="TransportOperationNotFound" xml:space="preserve">
+        <value>The transport operation was not found.</value>
+    </data>
+    <data name="InvalidIncidentData" xml:space="preserve">
+        <value>The incident data is invalid.</value>
+    </data>
+    <data name="IncidentNotFound" xml:space="preserve">
+        <value>The incident was not found.</value>
+    </data>
+    <data name="InvalidCredentials" xml:space="preserve">
+        <value>The email or the password is not correct.</value>
+    </data>
+    <data name="InvalidEmail" xml:space="preserve">
+        <value>The email address is not valid.</value>
+    </data>
+    <data name="TaxIdAlreadyRegistered" xml:space="preserve">
+        <value>An organization with this tax id is already registered.</value>
+    </data>
+    <data name="OrganizationNotFound" xml:space="preserve">
+        <value>The organization was not found.</value>
+    </data>
+    <data name="InvalidUserData" xml:space="preserve">
+        <value>The first name and the last name are required.</value>
+    </data>
+    <data name="PasswordTooShort" xml:space="preserve">
+        <value>The password must have at least 8 characters.</value>
+    </data>
+    <data name="EmailAlreadyRegistered" xml:space="preserve">
+        <value>This email address is already registered.</value>
+    </data>
+    <data name="UserNotFound" xml:space="preserve">
+        <value>The user was not found.</value>
+    </data>
+    <data name="InvalidVehicleData" xml:space="preserve">
+        <value>The brand, the model and a capacity greater than zero are required.</value>
+    </data>
+    <data name="InvalidPlateNumber" xml:space="preserve">
+        <value>The plate number must follow the format AAA-111.</value>
+    </data>
+    <data name="PlateNumberAlreadyRegistered" xml:space="preserve">
+        <value>A vehicle with this plate number is already registered.</value>
+    </data>
+    <data name="VehicleNotFound" xml:space="preserve">
+        <value>The vehicle was not found.</value>
+    </data>
+    <data name="InvalidDriverData" xml:space="preserve">
+        <value>The first name and the last name are required.</value>
+    </data>
+    <data name="InvalidDocumentNumber" xml:space="preserve">
+        <value>The document number must have 8 digits.</value>
+    </data>
+    <data name="InvalidLicenseNumber" xml:space="preserve">
+        <value>The license number must be one letter followed by 8 digits.</value>
+    </data>
+    <data name="DocumentNumberAlreadyRegistered" xml:space="preserve">
+        <value>A driver with this document number is already registered.</value>
+    </data>
+    <data name="LicenseNumberAlreadyRegistered" xml:space="preserve">
+        <value>A driver with this license number is already registered.</value>
+    </data>
+    <data name="DriverNotFound" xml:space="preserve">
+        <value>The driver was not found.</value>
+    </data>
 </root>
