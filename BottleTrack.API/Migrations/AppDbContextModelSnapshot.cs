@@ -583,8 +583,8 @@ namespace BottleTrack.API.Migrations
                         .HasColumnType("char(36)")
                         .HasColumnName("organization_id");
 
-                    b.Property<DateOnly>("ScheduledDate")
-                        .HasColumnType("date")
+                    b.Property<DateTime>("ScheduledDate")
+                        .HasColumnType("datetime(6)")
                         .HasColumnName("scheduled_date");
 
                     b.Property<string>("Status")
