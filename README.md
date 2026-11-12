@@ -43,7 +43,7 @@ Each bounded context folder has the same layers:
 
 ## Version
 
-Current release: `v1.0.0`.
+Current release: `v1.0.1`.
 
 ## Conventions
 
