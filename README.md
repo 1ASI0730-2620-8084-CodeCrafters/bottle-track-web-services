@@ -41,6 +41,10 @@ Each bounded context folder has the same layers:
 5. Controllers use `[Route("api/v1/[controller]")]`, plural names, and are converted to kebab-case.
 6. Add new texts to the three `Resources/SharedResource*.resx` files.
 
+## Version
+
+Current release: `v1.0.0`.
+
 ## Conventions
 
 GitFlow, Semantic Versioning, Conventional Commits, English identifiers and no code comments, as defined in section 5.1 of the project report.
