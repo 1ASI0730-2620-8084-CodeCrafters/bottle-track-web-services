@@ -81,7 +81,8 @@ public class DriversController : ControllerBase
     public async Task<ActionResult> UpdateDriver(Guid id, [FromBody] UpdateDriverResource resource,
         CancellationToken cancellationToken)
     {
-        var command = new UpdateDriverCommand(id, resource.FirstName, resource.LastName, resource.Phone);
+        var command = new UpdateDriverCommand(id, resource.FirstName, resource.LastName, resource.Phone,
+            resource.Status);
         var result = await driverCommandService.Handle(command, cancellationToken);
 
         return result.Fold<ActionResult>(
@@ -96,7 +97,8 @@ public class DriversController : ControllerBase
         if (error == DriverError.DriverNotFound)
             statusCode = StatusCodes.Status404NotFound;
 
-        if (error == DriverError.DocumentNumberAlreadyRegistered || error == DriverError.LicenseNumberAlreadyRegistered)
+        if (error == DriverError.DocumentNumberAlreadyRegistered || error == DriverError.LicenseNumberAlreadyRegistered ||
+            error == DriverError.InvalidStatusChange)
             statusCode = StatusCodes.Status409Conflict;
 
         return Problem(detail: localizer[error.ToString()].Value, statusCode: statusCode);

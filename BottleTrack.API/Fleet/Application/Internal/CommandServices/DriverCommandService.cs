@@ -70,12 +70,31 @@ public class DriverCommandService : IDriverCommandService
         if (driver == null)
             return Result<Driver, DriverError>.Failure(DriverError.DriverNotFound);
 
+        if (command.Status.HasValue && command.Status.Value != driver.Status)
+        {
+            if (!IsAllowedStatusChange(driver.Status, command.Status.Value))
+                return Result<Driver, DriverError>.Failure(DriverError.InvalidStatusChange);
+
+            if (command.Status.Value == DriverStatus.Inactive)
+                driver.Deactivate();
+            else
+                driver.Activate();
+        }
+
         driver.UpdateDetails(command.FirstName, command.LastName, command.Phone);
 
         driverRepository.Update(driver);
         await unitOfWork.CompleteAsync(cancellationToken);
 
         return Result<Driver, DriverError>.Success(driver);
+    }
+
+    private bool IsAllowedStatusChange(DriverStatus current, DriverStatus requested)
+    {
+        if (current == DriverStatus.Available && requested == DriverStatus.Inactive)
+            return true;
+
+        return current == DriverStatus.Inactive && requested == DriverStatus.Available;
     }
 
     private bool IsValidDocumentNumber(string documentNumber)
