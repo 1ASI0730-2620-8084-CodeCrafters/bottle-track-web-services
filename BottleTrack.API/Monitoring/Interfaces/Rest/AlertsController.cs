@@ -44,7 +44,7 @@ public class AlertsController : ControllerBase
             error => ErrorResult(error));
     }
 
-    [HttpPut("{id:guid}/acknowledgement")]
+    [HttpPost("{id:guid}/acknowledgments")]
     [ProducesResponseType(typeof(AlertResource), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status404NotFound)]
     public async Task<ActionResult> AcknowledgeAlert(Guid id, [FromBody] AcknowledgeAlertResource resource,
