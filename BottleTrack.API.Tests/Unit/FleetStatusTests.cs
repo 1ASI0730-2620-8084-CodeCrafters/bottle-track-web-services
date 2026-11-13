@@ -11,6 +11,12 @@ public class FleetStatusTests
         return Vehicle.Register(Guid.NewGuid(), new PlateNumber("ABC-123"), "Volvo", "FH 460", 400);
     }
 
+    private static Driver NewDriver()
+    {
+        return Driver.Register(Guid.NewGuid(), "Carlos", "Mendoza", "45678912", new LicenseNumber("Q45678912"),
+            "987654321");
+    }
+
     [Fact]
     public void SendToMaintenance_ThenReturnToService_RestoresAvailability()
     {
@@ -38,5 +44,26 @@ public class FleetStatusTests
         vehicle.Reserve();
 
         Assert.Throws<InvalidOperationException>(() => vehicle.SendToMaintenance());
+    }
+
+    [Fact]
+    public void Deactivate_ThenActivate_RestoresAvailability()
+    {
+        Driver driver = NewDriver();
+
+        driver.Deactivate();
+        Assert.Equal(DriverStatus.Inactive, driver.Status);
+
+        driver.Activate();
+        Assert.Equal(DriverStatus.Available, driver.Status);
+    }
+
+    [Fact]
+    public void Deactivate_FailsWhenDriverIsAssigned()
+    {
+        Driver driver = NewDriver();
+        driver.Reserve();
+
+        Assert.Throws<InvalidOperationException>(() => driver.Deactivate());
     }
 }
