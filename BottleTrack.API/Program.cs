@@ -39,6 +39,7 @@ using System.Text;
 using BottleTrack.API.Iam.Infrastructure.Tokens;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
+using Scalar.AspNetCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -200,7 +201,7 @@ app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapOpenApi();
-app.UseSwaggerUI(options => options.SwaggerEndpoint("/openapi/v1.json", "BottleTrack.API v1"));
+app.MapScalarApiReference();
 app.MapControllers();
 
 app.Run();

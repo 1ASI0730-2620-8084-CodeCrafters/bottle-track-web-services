@@ -8,7 +8,7 @@ ASP.NET Core (.NET 10), Entity Framework Core and MySQL, organized as a modular 
 
 1. Start MySQL. The API creates the `bottletrack` database and applies migrations on startup.
 2. Check `BottleTrack.API/appsettings.Development.json` (user and password of your local MySQL).
-3. Run the `https` profile. Swagger UI opens at `/swagger`.
+3. Run the `https` profile. Scalar opens at `/scalar`.
 
 ## Structure
 
@@ -43,7 +43,7 @@ Each bounded context folder has the same layers:
 
 ## Version
 
-Current release: `v1.0.1`.
+Current release: `v2.0.0`.
 
 ## Conventions
 

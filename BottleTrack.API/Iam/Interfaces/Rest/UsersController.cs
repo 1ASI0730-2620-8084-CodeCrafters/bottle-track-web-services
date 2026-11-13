@@ -90,7 +90,7 @@ public class UsersController : ControllerBase
             error => ErrorResult(error));
     }
 
-    [HttpPut("{id:guid}/role")]
+    [HttpPost("{id:guid}/roles")]
     [ProducesResponseType(typeof(UserResource), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status404NotFound)]
     public async Task<ActionResult> AssignUserRole(Guid id, [FromBody] AssignRoleResource resource,

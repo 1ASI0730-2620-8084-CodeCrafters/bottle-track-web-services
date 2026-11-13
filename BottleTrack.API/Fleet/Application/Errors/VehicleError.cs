@@ -5,5 +5,6 @@ public enum VehicleError
     InvalidVehicleData,
     InvalidPlateNumber,
     PlateNumberAlreadyRegistered,
-    VehicleNotFound
+    VehicleNotFound,
+    InvalidStatusChange
 }

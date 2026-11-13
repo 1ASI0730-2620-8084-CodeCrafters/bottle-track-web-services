@@ -61,7 +61,7 @@ public class TransportOperationsController : ControllerBase
             error => ErrorResult(error));
     }
 
-    [HttpPut("{id:guid}/dispatch")]
+    [HttpPost("{id:guid}/dispatches")]
     [ProducesResponseType(typeof(TransportOperationResource), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status404NotFound)]
     public async Task<ActionResult> DispatchTransportOperation(Guid id,
