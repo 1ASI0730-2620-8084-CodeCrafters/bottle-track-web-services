@@ -66,4 +66,20 @@ public class Driver
 
         Status = DriverStatus.Available;
     }
+
+    public void Deactivate()
+    {
+        if (Status != DriverStatus.Available)
+            throw new InvalidOperationException("Only an available driver can be deactivated.");
+
+        Status = DriverStatus.Inactive;
+    }
+
+    public void Activate()
+    {
+        if (Status != DriverStatus.Inactive)
+            throw new InvalidOperationException("Only an inactive driver can be activated.");
+
+        Status = DriverStatus.Available;
+    }
 }
