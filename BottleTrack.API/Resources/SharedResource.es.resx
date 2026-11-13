@@ -117,4 +117,7 @@
     <data name="DriverNotFound" xml:space="preserve">
         <value>No se encontró el conductor.</value>
     </data>
+    <data name="InvalidStatusChange" xml:space="preserve">
+        <value>El cambio de estado solicitado no está permitido.</value>
+    </data>
 </root>

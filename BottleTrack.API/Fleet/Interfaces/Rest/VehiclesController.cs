@@ -81,7 +81,8 @@ public class VehiclesController : ControllerBase
     public async Task<ActionResult> UpdateVehicle(Guid id, [FromBody] UpdateVehicleResource resource,
         CancellationToken cancellationToken)
     {
-        var command = new UpdateVehicleCommand(id, resource.Brand, resource.Model, resource.CapacityInBoxes);
+        var command = new UpdateVehicleCommand(id, resource.Brand, resource.Model, resource.CapacityInBoxes,
+            resource.Status);
         var result = await vehicleCommandService.Handle(command, cancellationToken);
 
         return result.Fold<ActionResult>(
@@ -96,7 +97,7 @@ public class VehiclesController : ControllerBase
         if (error == VehicleError.VehicleNotFound)
             statusCode = StatusCodes.Status404NotFound;
 
-        if (error == VehicleError.PlateNumberAlreadyRegistered)
+        if (error == VehicleError.PlateNumberAlreadyRegistered || error == VehicleError.InvalidStatusChange)
             statusCode = StatusCodes.Status409Conflict;
 
         return Problem(detail: localizer[error.ToString()].Value, statusCode: statusCode);

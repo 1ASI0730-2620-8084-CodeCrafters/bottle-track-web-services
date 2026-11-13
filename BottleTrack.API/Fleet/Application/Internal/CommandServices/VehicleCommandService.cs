@@ -61,11 +61,30 @@ public class VehicleCommandService : IVehicleCommandService
         if (vehicle == null)
             return Result<Vehicle, VehicleError>.Failure(VehicleError.VehicleNotFound);
 
+        if (command.Status.HasValue && command.Status.Value != vehicle.Status)
+        {
+            if (!IsAllowedStatusChange(vehicle.Status, command.Status.Value))
+                return Result<Vehicle, VehicleError>.Failure(VehicleError.InvalidStatusChange);
+
+            if (command.Status.Value == VehicleStatus.InMaintenance)
+                vehicle.SendToMaintenance();
+            else
+                vehicle.ReturnToService();
+        }
+
         vehicle.UpdateDetails(command.Brand, command.Model, command.CapacityInBoxes);
 
         vehicleRepository.Update(vehicle);
         await unitOfWork.CompleteAsync(cancellationToken);
 
         return Result<Vehicle, VehicleError>.Success(vehicle);
+    }
+
+    private bool IsAllowedStatusChange(VehicleStatus current, VehicleStatus requested)
+    {
+        if (current == VehicleStatus.Available && requested == VehicleStatus.InMaintenance)
+            return true;
+
+        return current == VehicleStatus.InMaintenance && requested == VehicleStatus.Available;
     }
 }
