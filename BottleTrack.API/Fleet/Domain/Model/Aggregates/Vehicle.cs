@@ -69,4 +69,12 @@ public class Vehicle
 
         Status = VehicleStatus.InMaintenance;
     }
+
+    public void ReturnToService()
+    {
+        if (Status != VehicleStatus.InMaintenance)
+            throw new InvalidOperationException("Only a vehicle in maintenance can return to service.");
+
+        Status = VehicleStatus.Available;
+    }
 }
