@@ -60,7 +60,7 @@ public class IncidentsController : ControllerBase
             error => ErrorResult(error));
     }
 
-    [HttpPut("{id:guid}/resolution")]
+    [HttpPost("{id:guid}/resolutions")]
     [ProducesResponseType(typeof(IncidentResource), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status400BadRequest)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status404NotFound)]
