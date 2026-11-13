@@ -24,4 +24,18 @@ public class UserQueryService : IUserQueryService
     {
         return await userRepository.ListByOrganizationAsync(query.OrganizationId, cancellationToken);
     }
+
+    public async Task<IEnumerable<User>> Handle(GetUsersByRoleQuery query, CancellationToken cancellationToken = default)
+    {
+        IEnumerable<User> users = await userRepository.ListByOrganizationAsync(query.OrganizationId, cancellationToken);
+
+        List<User> usersWithRole = new List<User>();
+        foreach (User user in users)
+        {
+            if (user.Role == query.Role)
+                usersWithRole.Add(user);
+        }
+
+        return usersWithRole;
+    }
 }

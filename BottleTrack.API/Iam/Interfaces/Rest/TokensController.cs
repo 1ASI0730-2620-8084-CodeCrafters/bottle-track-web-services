@@ -11,20 +11,20 @@ namespace BottleTrack.API.Iam.Interfaces.Rest;
 [ApiController]
 [Route("api/v1/[controller]")]
 [Produces(MediaTypeNames.Application.Json)]
-[Tags("Authentication")]
-public class AuthenticationController : ControllerBase
+[Tags("Tokens")]
+public class TokensController : ControllerBase
 {
     private readonly IAuthenticationCommandService authenticationCommandService;
     private readonly IStringLocalizer<SharedResource> localizer;
 
-    public AuthenticationController(IAuthenticationCommandService authenticationCommandService,
+    public TokensController(IAuthenticationCommandService authenticationCommandService,
         IStringLocalizer<SharedResource> localizer)
     {
         this.authenticationCommandService = authenticationCommandService;
         this.localizer = localizer;
     }
 
-    [HttpPost("sign-in")]
+    [HttpPost]
     [ProducesResponseType(typeof(AuthenticatedUserResource), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status401Unauthorized)]
     public async Task<ActionResult> SignIn([FromBody] SignInResource resource, CancellationToken cancellationToken)

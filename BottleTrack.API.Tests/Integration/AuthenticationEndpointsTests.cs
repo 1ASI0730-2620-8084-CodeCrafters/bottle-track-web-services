@@ -30,7 +30,7 @@ public class AuthenticationEndpointsTests : IClassFixture<ApiFactory>
         Assert.Equal(HttpStatusCode.Created, userResponse.StatusCode);
 
         var credentials = new { email = "angel@codecrafters.pe", password = "Password123" };
-        HttpResponseMessage signInResponse = await client.PostAsJsonAsync("/api/v1/authentication/sign-in", credentials);
+        HttpResponseMessage signInResponse = await client.PostAsJsonAsync("/api/v1/tokens", credentials);
 
         Assert.Equal(HttpStatusCode.OK, signInResponse.StatusCode);
         JsonElement signInBody = await signInResponse.Content.ReadFromJsonAsync<JsonElement>();
@@ -52,7 +52,7 @@ public class AuthenticationEndpointsTests : IClassFixture<ApiFactory>
         await client.PostAsJsonAsync("/api/v1/users", user);
 
         var credentials = new { email = "maria@codecrafters.pe", password = "WrongPassword" };
-        HttpResponseMessage signInResponse = await client.PostAsJsonAsync("/api/v1/authentication/sign-in", credentials);
+        HttpResponseMessage signInResponse = await client.PostAsJsonAsync("/api/v1/tokens", credentials);
 
         Assert.Equal(HttpStatusCode.Unauthorized, signInResponse.StatusCode);
     }
