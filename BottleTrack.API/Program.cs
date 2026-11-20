@@ -40,6 +40,8 @@ using BottleTrack.API.Iam.Infrastructure.Tokens;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using Scalar.AspNetCore;
+using BottleTrack.API.Fleet.Application.ACL;
+using BottleTrack.API.Fleet.Interfaces.ACL;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -128,6 +130,7 @@ builder.Services.AddScoped<IVehicleCommandService, VehicleCommandService>();
 builder.Services.AddScoped<IVehicleQueryService, VehicleQueryService>();
 builder.Services.AddScoped<IDriverCommandService, DriverCommandService>();
 builder.Services.AddScoped<IDriverQueryService, DriverQueryService>();
+builder.Services.AddScoped<IFleetContextFacade, FleetContextFacade>();
 
 builder.Services.Configure<JwtSettings>(builder.Configuration.GetSection("Jwt"));
 builder.Services.AddScoped<ITokenService, JwtTokenService>();
