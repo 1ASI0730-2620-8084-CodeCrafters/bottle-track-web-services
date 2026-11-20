@@ -38,4 +38,49 @@ public class DeliveryStop
         deliveryStop.Status = DeliveryStopStatus.Pending;
         return deliveryStop;
     }
+
+    public void ChangeSequence(int sequenceNumber)
+    {
+        SequenceNumber = sequenceNumber;
+    }
+
+    public bool IsValidResult(DeliveryStopStatus status, int deliveredQuantity, string? failureReason)
+    {
+        if (Status != DeliveryStopStatus.Pending)
+            return false;
+
+        if (status == DeliveryStopStatus.Delivered)
+            return true;
+
+        if (string.IsNullOrWhiteSpace(failureReason))
+            return false;
+
+        if (status == DeliveryStopStatus.NotDelivered)
+            return true;
+
+        if (status == DeliveryStopStatus.PartiallyDelivered)
+            return deliveredQuantity > 0 && deliveredQuantity < PlannedQuantity;
+
+        return false;
+    }
+
+    public void Record(DeliveryStopStatus status, int deliveredQuantity, string? failureReason)
+    {
+        if (!IsValidResult(status, deliveredQuantity, failureReason))
+            throw new InvalidOperationException("The delivery result is not valid for this stop.");
+
+        Status = status;
+        DeliveredQuantity = deliveredQuantity;
+        FailureReason = null;
+
+        if (status == DeliveryStopStatus.Delivered)
+            DeliveredQuantity = PlannedQuantity;
+        else
+            FailureReason = failureReason!.Trim();
+
+        if (status == DeliveryStopStatus.NotDelivered)
+            DeliveredQuantity = 0;
+
+        ConfirmedAt = DateTime.UtcNow;
+    }
 }
