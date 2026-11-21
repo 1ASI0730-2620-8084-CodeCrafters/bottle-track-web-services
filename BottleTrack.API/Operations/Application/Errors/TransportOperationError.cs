@@ -3,5 +3,10 @@ namespace BottleTrack.API.Operations.Application.Errors;
 public enum TransportOperationError
 {
     InvalidTransportOperationData,
-    TransportOperationNotFound
+    TransportOperationNotFound,
+    InvalidTransportOperationStatusChange,
+    DeliveryStopNotFound,
+    InvalidDeliveryResult,
+    VehicleNotAvailable,
+    DriverNotAvailable
 }

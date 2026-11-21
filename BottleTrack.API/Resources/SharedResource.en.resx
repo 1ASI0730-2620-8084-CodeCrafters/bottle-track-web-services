@@ -57,6 +57,21 @@
     <data name="TransportOperationNotFound" xml:space="preserve">
         <value>The transport operation was not found.</value>
     </data>
+    <data name="InvalidTransportOperationStatusChange" xml:space="preserve">
+        <value>The transport operation does not allow this action in its current status.</value>
+    </data>
+    <data name="DeliveryStopNotFound" xml:space="preserve">
+        <value>The delivery stop was not found in this transport operation.</value>
+    </data>
+    <data name="InvalidDeliveryResult" xml:space="preserve">
+        <value>The delivery result is not valid for this stop.</value>
+    </data>
+    <data name="VehicleNotAvailable" xml:space="preserve">
+        <value>The vehicle is not available.</value>
+    </data>
+    <data name="DriverNotAvailable" xml:space="preserve">
+        <value>The driver is not available.</value>
+    </data>
     <data name="InvalidIncidentData" xml:space="preserve">
         <value>The incident data is invalid.</value>
     </data>
