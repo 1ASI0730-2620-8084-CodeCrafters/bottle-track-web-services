@@ -7,6 +7,7 @@ using BottleTrack.API.Operations.Domain.Model.Queries;
 using BottleTrack.API.Operations.Interfaces.Rest.Resources;
 using BottleTrack.API.Operations.Interfaces.Rest.Transform;
 using BottleTrack.API.Resources;
+using BottleTrack.API.Shared.Application.Patterns;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Localization;
 
@@ -75,6 +76,93 @@ public class TransportOperationsController : ControllerBase
             error => ErrorResult(error));
     }
 
+    [HttpPost("{id:guid}/delivery-stops/{deliveryStopId:guid}/moves")]
+    [ProducesResponseType(typeof(TransportOperationResource), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status404NotFound)]
+    [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status409Conflict)]
+    public async Task<ActionResult> MoveDeliveryStop(Guid id, Guid deliveryStopId,
+        [FromBody] MoveDeliveryStopResource resource, CancellationToken cancellationToken)
+    {
+        var command = new MoveDeliveryStopCommand(id, deliveryStopId, resource.Offset);
+        var result = await transportOperationCommandService.Handle(command, cancellationToken);
+        return OperationResult(result);
+    }
+
+    [HttpPost("{id:guid}/vehicle-assignments")]
+    [ProducesResponseType(typeof(TransportOperationResource), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status404NotFound)]
+    [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status409Conflict)]
+    public async Task<ActionResult> AssignVehicle(Guid id, [FromBody] AssignVehicleResource resource,
+        CancellationToken cancellationToken)
+    {
+        var command = new AssignVehicleCommand(id, resource.VehicleId);
+        var result = await transportOperationCommandService.Handle(command, cancellationToken);
+        return OperationResult(result);
+    }
+
+    [HttpPost("{id:guid}/driver-assignments")]
+    [ProducesResponseType(typeof(TransportOperationResource), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status404NotFound)]
+    [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status409Conflict)]
+    public async Task<ActionResult> AssignDriver(Guid id, [FromBody] AssignDriverResource resource,
+        CancellationToken cancellationToken)
+    {
+        var command = new AssignDriverCommand(id, resource.DriverId);
+        var result = await transportOperationCommandService.Handle(command, cancellationToken);
+        return OperationResult(result);
+    }
+
+    [HttpPost("{id:guid}/starts")]
+    [ProducesResponseType(typeof(TransportOperationResource), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status404NotFound)]
+    [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status409Conflict)]
+    public async Task<ActionResult> StartTransportOperation(Guid id, CancellationToken cancellationToken)
+    {
+        var command = new StartTransportOperationCommand(id);
+        var result = await transportOperationCommandService.Handle(command, cancellationToken);
+        return OperationResult(result);
+    }
+
+    [HttpPost("{id:guid}/delivery-stops/{deliveryStopId:guid}/deliveries")]
+    [ProducesResponseType(typeof(TransportOperationResource), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status404NotFound)]
+    [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status409Conflict)]
+    public async Task<ActionResult> RecordDelivery(Guid id, Guid deliveryStopId,
+        [FromBody] RecordDeliveryResource resource, CancellationToken cancellationToken)
+    {
+        var command = new RecordDeliveryCommand(id, deliveryStopId, resource.Status, resource.DeliveredQuantity,
+            resource.FailureReason);
+        var result = await transportOperationCommandService.Handle(command, cancellationToken);
+        return OperationResult(result);
+    }
+
+    [HttpPost("{id:guid}/completions")]
+    [ProducesResponseType(typeof(TransportOperationResource), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status404NotFound)]
+    [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status409Conflict)]
+    public async Task<ActionResult> CompleteTransportOperation(Guid id, CancellationToken cancellationToken)
+    {
+        var command = new CompleteTransportOperationCommand(id);
+        var result = await transportOperationCommandService.Handle(command, cancellationToken);
+        return OperationResult(result);
+    }
+
+    [HttpPost("{id:guid}/cancellations")]
+    [ProducesResponseType(typeof(TransportOperationResource), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status404NotFound)]
+    [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status409Conflict)]
+    public async Task<ActionResult> CancelTransportOperation(Guid id,
+        [FromBody] CancelTransportOperationResource resource, CancellationToken cancellationToken)
+    {
+        var command = new CancelTransportOperationCommand(id, resource.Reason);
+        var result = await transportOperationCommandService.Handle(command, cancellationToken);
+        return OperationResult(result);
+    }
+
     [HttpGet("{id:guid}")]
     [ProducesResponseType(typeof(TransportOperationResource), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status404NotFound)]
@@ -104,12 +192,25 @@ public class TransportOperationsController : ControllerBase
         return Ok(resources);
     }
 
+    private ActionResult OperationResult(Result<TransportOperation, TransportOperationError> result)
+    {
+        return result.Fold<ActionResult>(
+            operation => Ok(TransportOperationAssembler.ToResource(operation)),
+            error => ErrorResult(error));
+    }
+
     private ActionResult ErrorResult(TransportOperationError error)
     {
         int statusCode = StatusCodes.Status400BadRequest;
 
-        if (error == TransportOperationError.TransportOperationNotFound)
+        if (error == TransportOperationError.TransportOperationNotFound ||
+            error == TransportOperationError.DeliveryStopNotFound)
             statusCode = StatusCodes.Status404NotFound;
+
+        if (error == TransportOperationError.InvalidTransportOperationStatusChange ||
+            error == TransportOperationError.VehicleNotAvailable ||
+            error == TransportOperationError.DriverNotAvailable)
+            statusCode = StatusCodes.Status409Conflict;
 
         return Problem(detail: localizer[error.ToString()].Value, statusCode: statusCode);
     }
