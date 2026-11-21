@@ -15,4 +15,25 @@ public interface ITransportOperationCommandService
 
     Task<Result<TransportOperation, TransportOperationError>> Handle(DispatchTransportOperationCommand command,
         CancellationToken cancellationToken = default);
+
+    Task<Result<TransportOperation, TransportOperationError>> Handle(MoveDeliveryStopCommand command,
+        CancellationToken cancellationToken = default);
+
+    Task<Result<TransportOperation, TransportOperationError>> Handle(AssignVehicleCommand command,
+        CancellationToken cancellationToken = default);
+
+    Task<Result<TransportOperation, TransportOperationError>> Handle(AssignDriverCommand command,
+        CancellationToken cancellationToken = default);
+
+    Task<Result<TransportOperation, TransportOperationError>> Handle(StartTransportOperationCommand command,
+        CancellationToken cancellationToken = default);
+
+    Task<Result<TransportOperation, TransportOperationError>> Handle(RecordDeliveryCommand command,
+        CancellationToken cancellationToken = default);
+
+    Task<Result<TransportOperation, TransportOperationError>> Handle(CompleteTransportOperationCommand command,
+        CancellationToken cancellationToken = default);
+
+    Task<Result<TransportOperation, TransportOperationError>> Handle(CancelTransportOperationCommand command,
+        CancellationToken cancellationToken = default);
 }

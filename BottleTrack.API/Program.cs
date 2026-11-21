@@ -42,6 +42,7 @@ using Microsoft.IdentityModel.Tokens;
 using Scalar.AspNetCore;
 using BottleTrack.API.Fleet.Application.ACL;
 using BottleTrack.API.Fleet.Interfaces.ACL;
+using BottleTrack.API.Operations.Application.Internal.OutboundServices;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -144,6 +145,7 @@ builder.Services.AddScoped<IDeliveryPointRepository, DeliveryPointRepository>();
 builder.Services.AddScoped<IDeliveryPointCommandService, DeliveryPointCommandService>();
 builder.Services.AddScoped<IDeliveryPointQueryService, DeliveryPointQueryService>();
 builder.Services.AddScoped<ITransportOperationRepository, TransportOperationRepository>();
+builder.Services.AddScoped<ExternalFleetService>();
 builder.Services.AddScoped<ITransportOperationCommandService, TransportOperationCommandService>();
 builder.Services.AddScoped<ITransportOperationQueryService, TransportOperationQueryService>();
 
